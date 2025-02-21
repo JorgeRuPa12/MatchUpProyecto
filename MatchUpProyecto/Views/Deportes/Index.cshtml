@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MatchUpProyecto.Models.Deporte>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="container">
+    <h1>Index</h1>
+    <div class="row">
+        @foreach (var deporte in Model)
+        {
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@deporte.Nombre</h5>
+                        <p class="card-text"><b>Jugadores:</b> @deporte.MinJugadores - @deporte.MaxJugadores</p>
+                        <a href="#" class="btn btn-primary">Buscar Encuentros</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
