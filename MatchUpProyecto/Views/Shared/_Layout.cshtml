@@ -22,7 +22,10 @@
     <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
     <link href="~/vendor/aos/aos.css" rel="stylesheet">
     <link href="~/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-    <link href="~/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/vendor/glightbox/css/glightbox.min.css" rel="stylesheet"><!-- Agregar Leaflet CSS y JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
 
     <!-- Main CSS File -->
     <link href="~/css/main.css" rel="stylesheet">
@@ -49,9 +52,9 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a asp-action="Index" asp-controller="Home">Home</a></li>
                     <li><a asp-action="Index" asp-controller="Deportes">Deportes</a></li>
-                    <li><a href="services.html">Services</a></li>
+                    <li><a asp-action="Index" asp-controller="Partidos">Partidos</a></li>
                     <li><a href="portfolio.html">Portfolio</a></li>
                     <li><a href="team.html">Team</a></li>
                     <li><a href="blog.html">Blog</a></li>

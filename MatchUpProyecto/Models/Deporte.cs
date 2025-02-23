@@ -15,5 +15,7 @@ namespace MatchUpProyecto.Models
         public int MaxJugadores { get; set; }
         [Column("MinJugadoresEquipo")]
         public int MinJugadores { get; set; }
+        [Column("Imagen")]
+        public string Imagen { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 /**
+/**
 * Template Name: Active
 * Template URL: https://bootstrapmade.com/active-bootstrap-website-template/
 * Updated: Aug 07 2024 with Bootstrap v5.3.3
@@ -724,7 +725,11 @@ section,
 --------------------------------------------------------------*/
 #about {
     background: url(../img/backgrounds/03-deportes_3.png.jpg) no-repeat fixed center;
-    background-size: contain;
+    background-size:cover;
+}
+
+#about form {
+    color: white
 }
 
 .about .btn-get-started {
@@ -2385,3 +2390,4 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
 }
+

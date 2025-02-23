@@ -11,12 +11,15 @@
     <div class="row">
         @foreach (var deporte in Model)
         {
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">@deporte.Nombre</h5>
-                        <p class="card-text"><b>Jugadores:</b> @deporte.MinJugadores - @deporte.MaxJugadores</p>
-                        <a href="#" class="btn btn-primary">Buscar Encuentros</a>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="post-entry" data-aos="fade-up" data-aos-delay="100">
+                    <a href="#" class="thumb d-block"><img src="@deporte.Imagen" alt="Image" class="img-fluid rounded"></a>
+
+                    <div class="post-content">
+                        <h3 style="float: left"><a href="#">@deporte.Nombre</a></h3>
+                        <p style="float:right">
+                            Jugadores: @deporte.MinJugadores - @deporte.MaxJugadores
+                        </p>
                     </div>
                 </div>
             </div>
