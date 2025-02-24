@@ -12,16 +12,18 @@
         @foreach (var deporte in Model)
         {
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="post-entry" data-aos="fade-up" data-aos-delay="100">
-                    <a href="#" class="thumb d-block"><img src="@deporte.Imagen" alt="Image" class="img-fluid rounded"></a>
-
-                    <div class="post-content">
-                        <h3 style="float: left"><a href="#">@deporte.Nombre</a></h3>
-                        <p style="float:right">
-                            Jugadores: @deporte.MinJugadores - @deporte.MaxJugadores
-                        </p>
+                <!-- From Uiverse.io by gharsh11032000 -->
+                <div class="card-D">
+                    <div class="card-D-inner">
+                        <div class="card-D-front" style="background-image: url(@deporte.Imagen); background-size:cover">
+                            <p>@deporte.Nombre</p>
+                        </div>
+                        <div class="card-D-back">
+                            <p>@deporte.MaxJugadores - @deporte.MinJugadores</p>
+                        </div>
                     </div>
                 </div>
+
             </div>
         }
     </div>
