@@ -36,6 +36,11 @@
                             <input type="text" id="lng" name="Longitud" class="form-control" readonly required />
                         </div>
 
+                        <div class="mb-3">
+                            <label for="comunidad" class="form-label">Comunidad Autónoma</label>
+                            <input type="text" id="comunidad" class="form-control" readonly>
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100">Guardar Partido</button>
                     </form>
                 </div>
@@ -62,19 +67,66 @@
         attribution: '© OpenStreetMap'
     }).addTo(map);
 
+    var provinciasLayer; // Guardar la capa de provincias
+
+    fetch('/geo/spain-provinces.geojson')
+        .then(response => response.json())
+        .then(data => {
+            provinciasLayer = L.geoJSON(data, {
+                style: function (feature) {
+                    return { color: "rgba(31, 82, 44, 0.5)", weight: 2, fillOpacity: 0.2 };
+                },
+                onEachFeature: function (feature, layer) {
+                    layer.on('click', function (e) {
+                        // Obtener el nombre de la comunidad autónoma
+                        var nombreComunidad = feature.properties.name;
+
+                        // Mostrarlo en el input
+                        document.getElementById("comunidad").value = nombreComunidad;
+
+                        // Evitar que el clic se propague al mapa
+                        e.originalEvent.stopPropagation();
+                    });
+                }
+            }).addTo(map);
+        }).catch(error => console.error('Error al cargar el GeoJSON:', error));
+
+    // Crear marcador arrastrable en Madrid
     var marker = L.marker([40.4168, -3.7038], { draggable: true }).addTo(map);
 
+    function actualizarUbicacion(latlng) {
+        document.getElementById("lat").value = latlng.lat;
+        document.getElementById("lng").value = latlng.lng;
+
+        // Verificar si está dentro de una comunidad
+        var dentroDeProvincia = false;
+        provinciasLayer.eachLayer(function (layer) {
+            if (layer.getBounds().contains(latlng)) {
+                dentroDeProvincia = true;
+                document.getElementById("comunidad").value = layer.feature.properties.name;
+            }
+        });
+
+        // Si no está dentro de ninguna comunidad, vaciar el input
+        if (!dentroDeProvincia) {
+            document.getElementById("comunidad").value = "";
+            document.getElementById("lat").value = "";
+            document.getElementById("lng").value = "";
+        }
+    }
+
+    // Evento al soltar el marcador
     marker.on('dragend', function (e) {
-        document.getElementById("lat").value = marker.getLatLng().lat;
-        document.getElementById("lng").value = marker.getLatLng().lng;
+        actualizarUbicacion(marker.getLatLng());
     });
 
+    // Evento de clic en el mapa para mover el marcador
     map.on('click', function (e) {
         if (bounds[0][0] <= e.latlng.lat && e.latlng.lat <= bounds[1][0] &&
             bounds[0][1] <= e.latlng.lng && e.latlng.lng <= bounds[1][1]) {
             marker.setLatLng(e.latlng);
-            document.getElementById("lat").value = e.latlng.lat;
-            document.getElementById("lng").value = e.latlng.lng;
+            actualizarUbicacion(e.latlng);
         }
     });
 </script>
+
