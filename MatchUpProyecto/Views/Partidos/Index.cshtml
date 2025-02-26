@@ -48,6 +48,9 @@
         </div>
 </section>
 
+<!-- Agregar la librería Turf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
+
 <script>
     var map = L.map('map').setView([40.4168, -3.7038], 6); // Coordenadas de Madrid
 
@@ -68,10 +71,13 @@
     }).addTo(map);
 
     var provinciasLayer; // Guardar la capa de provincias
+    var geojsonData;  // Guardar los datos GeoJSON para futuras consultas
 
     fetch('/geo/spain-provinces.geojson')
         .then(response => response.json())
         .then(data => {
+            geojsonData = data; // Guardamos los datos del GeoJSON
+
             provinciasLayer = L.geoJSON(data, {
                 style: function (feature) {
                     return { color: "rgba(31, 82, 44, 0.5)", weight: 2, fillOpacity: 0.2 };
@@ -98,20 +104,23 @@
         document.getElementById("lat").value = latlng.lat;
         document.getElementById("lng").value = latlng.lng;
 
-        // Verificar si está dentro de una comunidad
-        var dentroDeProvincia = false;
-        provinciasLayer.eachLayer(function (layer) {
-            if (layer.getBounds().contains(latlng)) {
-                dentroDeProvincia = true;
-                document.getElementById("comunidad").value = layer.feature.properties.name;
+        // Crear un punto con Turf.js
+        var punto = turf.point([latlng.lng, latlng.lat]);
+
+        // Verificar en qué comunidad autónoma se encuentra el punto
+        var comunidadEncontrada = null;
+        geojsonData.features.forEach(function (feature) {
+            var poligono = turf.polygon(feature.geometry.coordinates);
+            if (turf.booleanPointInPolygon(punto, poligono)) {
+                comunidadEncontrada = feature.properties.name;
             }
         });
 
-        // Si no está dentro de ninguna comunidad, vaciar el input
-        if (!dentroDeProvincia) {
+        // Actualizar el input con la comunidad autónoma correcta
+        if (comunidadEncontrada) {
+            document.getElementById("comunidad").value = comunidadEncontrada;
+        } else {
             document.getElementById("comunidad").value = "";
-            document.getElementById("lat").value = "";
-            document.getElementById("lng").value = "";
         }
     }
 
@@ -129,4 +138,5 @@
         }
     });
 </script>
+
 
