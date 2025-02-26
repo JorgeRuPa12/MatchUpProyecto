@@ -7,9 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("SqlMatchUp");
+string connectionString = builder.Configuration.GetConnectionString("SqlMatchUpCasa");
 builder.Services.AddTransient<RepositoryDeportes>();
 builder.Services.AddDbContext<DeporteContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddTransient<RepositoryPachanga>();
+builder.Services.AddDbContext<PachangaContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
