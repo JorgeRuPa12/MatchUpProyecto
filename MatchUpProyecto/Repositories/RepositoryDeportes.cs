@@ -6,8 +6,8 @@ namespace MatchUpProyecto.Repositories
 {
     public class RepositoryDeportes
     {
-        private DeporteContext context;
-        public RepositoryDeportes(DeporteContext context)
+        private MatchUpContext context;
+        public RepositoryDeportes(MatchUpContext context)
         {
             this.context = context;
         }

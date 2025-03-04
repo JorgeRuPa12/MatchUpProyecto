@@ -1,4 +1,5 @@
-﻿
+﻿@model List<Pachanga>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -6,3 +7,191 @@
 <h1>Index</h1>
 
 <a asp-controller="Pachangas" asp-action="Create">Crear Pachanga</a>
+<!-- Tabs Section -->
+<section id="tabs" class="tabs section light-background">
+
+    <div class="container">
+        <div class="row gap-x-lg-4 justify-content-between">
+            <div class="col-lg-4 js-custom-dots">
+                <a href="#" class="service-item link horizontal d-flex active" data-aos="fade-left" data-aos-delay="0">
+                    <div class="service-icon color-1 mb-4">
+                        <i class="bi bi-controller"></i>
+                    </div>
+                    <!-- /.icon -->
+                    <div class="service-contents">
+                        <h3>Pachangas</h3>
+                        <p>
+                            Far far away, behind the word mountains, far from the countries .
+                        </p>
+                    </div>
+                    <!-- /.service-contents-->
+                </a>
+                <!-- /.service -->
+
+                <a href="#" class="service-item link horizontal d-flex" data-aos="fade-left" data-aos-delay="100">
+                    <div class="service-icon color-2 mb-4">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+                    <!-- /.icon -->
+                    <div class="service-contents">
+                        <h3>Torneos</h3>
+                        <p>
+                            Far far away, behind the word mountains, far from the countries .
+                        </p>
+                    </div>
+                    <!-- /.service-contents-->
+                </a>
+                <!-- /.service -->
+
+                <a href="#" class="service-item link horizontal d-flex" data-aos="fade-left" data-aos-delay="200">
+                    <div class="service-icon color-3 mb-4">
+                        <i class="bi bi-bar-chart"></i>
+                    </div>
+                    <!-- /.icon -->
+                    <div class="service-contents">
+                        <h3>Ligas</h3>
+                        <p>
+                            Far far away, behind the word mountains, far from the countries .
+                        </p>
+                    </div>
+                    <!-- /.service-contents-->
+                </a>
+                <!-- /.service -->
+                <div class="service-item link horizontal d-flex" data-aos="fade-left" data-aos-delay="200">
+                    <div class="service-contents">
+                        <h3>Selecciona una provincia</h3>
+                        <form method="post">
+                            <label>Provincia</label>
+                            <select name="provincia" class="form-control">
+                                <option value="madrid">Madrid</option>
+                                <option value="barcelona">Barcelona</option>
+                                <option value="valencia">Valencia</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="swiper init-swiper-tabs">
+                    <script type="application/json" class="swiper-config">
+                        {
+                          "loop": true,
+                          "speed": 600,
+                          "autoHeight": true,
+                          "slidesPerView": "auto",
+                          "pagination": {
+                            "el": ".swiper-pagination",
+                            "type": "bullets",
+                            "clickable": true
+                          },
+                          "breakpoints": {
+                            "320": {
+                              "slidesPerView": 1,
+                              "spaceBetween": 40
+                            },
+                            "1200": {
+                              "slidesPerView": 1,
+                              "spaceBetween": 1
+                            }
+                          }
+                        }
+                    </script>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div id="mapP" style="height: 600px; width: 800px"></div>
+                            <div class="p-4">
+                                <h3 class="text-black h5 mb-3">Modern and clean design</h3>
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <p>
+                                            Far far away, behind the word mountains, far from the
+                                            countries Vokalia and Consonantia, there live the blind
+                                            texts. Separated they live in Bookmarksgrove right at the
+                                            coast of the Semantics, a large language ocean.
+                                        </p>
+                                        <p>
+                                            A small river named Duden flows by their place and
+                                            supplies it with the necessary regelialia. It is a
+                                            paradisematic country, in which roasted parts of sentences
+                                            fly into your mouth.
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <ul class="list-unstyled list-check">
+                                            <li>Far far away, behind the word</li>
+                                            <li>Far from the countries Vokalia</li>
+                                            <li>Separated they live in Bookmarksgrove</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div id="mapT" style="height: 600px; width: 800px"></div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div id="mapL" style="height: 600px; width: 800px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Definir mapas
+        var mapP = L.map('mapP').setView([40.4168, -3.7038], 6);
+        var mapT = L.map('mapT').setView([40.4168, -3.7038], 6);
+        var mapL = L.map('mapL').setView([40.4168, -3.7038], 6);
+
+        // Límite geográfico de España
+        var bounds = [
+            [35.0, -10.0],  // Suroeste
+            [44.5, 5.0]      // Noreste
+        ];
+
+        // Aplicar límites a cada mapa
+        [mapP, mapT, mapL].forEach(function (map) {
+            map.setMaxBounds(bounds);
+            map.on('drag', function () {
+                map.panInsideBounds(bounds, { animate: false });
+            });
+
+            // Agregar capa de OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+        });
+
+        // Lista de partidos desde el modelo
+        var partidos = [
+    @foreach (var pachanga in Model)
+    {
+        <text>
+                        {
+                            "nombre": "@pachanga.Nombre",
+                            "latitud": @pachanga.UbiLatitud,
+                            "longitud": @pachanga.UbiLongitud
+                        },
+        </text>
+    }
+        ];
+
+        // Agregar marcadores a cada mapa con los partidos
+        partidos.forEach(function (partido) {
+            L.marker([partido.latitud, partido.longitud])
+                .addTo(mapP) // Puedes cambiar a mapT o mapL si aplican
+                .bindPopup("<b>" + partido.nombre + "</b>");
+        });
+    });
+</script>
+
+</script>

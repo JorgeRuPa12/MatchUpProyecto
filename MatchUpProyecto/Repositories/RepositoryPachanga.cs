@@ -6,8 +6,8 @@ namespace MatchUpProyecto.Repositories
 {
     public class RepositoryPachanga
     {
-        private PachangaContext context;
-        public RepositoryPachanga( PachangaContext context)
+        private MatchUpContext context;
+        public RepositoryPachanga(MatchUpContext context)
         {
             this.context = context;
         }
@@ -22,25 +22,23 @@ namespace MatchUpProyecto.Repositories
 
         public async Task InsertPachangaAsync(Pachanga pachanga)
         {
-            var consulta = from datos in this.context.Pachangas
-                           select datos;
-            int maxId = 0;
+            int maxId = await this.context.Pachangas.AnyAsync()
+                ? await this.context.Pachangas.MaxAsync(x => x.Id)
+                : 0;
 
-            if(consulta.ToListAsync() != null)
-            {
-                maxId = consulta.Max(x => x.Id);
-            }
-            
             Pachanga pachangaI = new Pachanga
             {
                 Id = maxId + 1,
+                Nombre = pachanga.Nombre,
                 Ganador = pachanga.Ganador,
                 Deporte = pachanga.Deporte,
                 UbiLatitud = pachanga.UbiLatitud,
                 UbiLongitud = pachanga.UbiLongitud,
                 UbiProvincia = pachanga.UbiProvincia,
                 Inscripcion = pachanga.Inscripcion,
+                Estado = pachanga.Estado,
                 Acceso = pachanga.Acceso,
+                Fecha = pachanga.Fecha,
             };
             await this.context.Pachangas.AddAsync(pachangaI);
             await this.context.SaveChangesAsync();

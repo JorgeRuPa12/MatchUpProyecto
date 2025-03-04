@@ -13,37 +13,62 @@
                 </div>
 
                 <!-- Formulario -->
-                <div class="col-lg-4 order-lg-1">
-                    <span class="section-subtitle" data-aos="fade-up">Bienvenido a MatchUp</span>
-                    <h1 class="mb-4" data-aos="fade-up">Crea tu Partido</h1>
-                    <p data-aos="fade-up">
-                        Selecciona una ubicación en el mapa y completa la información de tu partido.
-                    </p>
+            <div class="col-lg-4 order-lg-1">
+                <span class="section-subtitle" data-aos="fade-up">Bienvenido a MatchUp</span>
+                <h1 class="mb-4" data-aos="fade-up">Crea tu Pachanga</h1>
+                <p data-aos="fade-up">
+                    Selecciona una ubicación en el mapa y completa la información de tu partido.
+                </p>
 
-                    <form class="needs-validation" novalidate data-aos="fade-up">
-                        <div class="mb-3">
-                            <label for="Nombre" class="form-label">Nombre del Partido:</label>
-                            <input type="text" name="Nombre" class="form-control" required />
-                        </div>
+                <form class="needs-validation" novalidate data-aos="fade-up">
+                    <div class="mb-3">
+                        <label for="Nombre" class="form-label">Nombre del Partido:</label>
+                        <input type="text" name="Nombre" class="form-control" required />
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="Latitud" class="form-label">Latitud:</label>
-                            <input type="text" id="lat" name="Latitud" class="form-control" readonly required />
-                        </div>
+                    <div class="mb-3">
+                        <label for="Deporte" class="form-label">Deporte:</label>
+                        <input type="text" name="Deporte" class="form-control" required />
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="Longitud" class="form-label">Longitud:</label>
-                            <input type="text" id="lng" name="Longitud" class="form-control" readonly required />
-                        </div>
+                    <div class="mb-3">
+                        <label for="lat" class="form-label">Latitud:</label>
+                        <input type="text" id="lat" name="UbiLatitud" class="form-control" readonly required />
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="comunidad" class="form-label">Comunidad Autónoma</label>
-                            <input type="text" id="comunidad" class="form-control" readonly>
-                        </div>
+                    <div class="mb-3">
+                        <label for="lng" class="form-label">Longitud:</label>
+                        <input type="text" id="lng" name="UbiLongitud" class="form-control" readonly required />
+                    </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Guardar Partido</button>
-                    </form>
-                </div>
+                    <div class="mb-3">
+                        <label for="provincia" class="form-label">Provincia:</label>
+                        <input type="text" id="provincia" name="UbiProvincia" class="form-control" readonly required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Inscripcion" class="form-label">Costo de Inscripción:</label>
+                        <input type="number" step="0.01" name="Inscripcion" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Estado" class="form-label">Estado:</label>
+                        <select name="Estado" class="form-control" required>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Confirmado">Confirmado</option>
+                            <option value="Finalizado">Finalizado</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Acceso" class="form-label">Tipo de Acceso:</label>
+                        <input type="text" name="Acceso" class="form-control" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Guardar Pachanga</button>
+                </form>
+            </div>
+
             </div>
         </div>
 </section>

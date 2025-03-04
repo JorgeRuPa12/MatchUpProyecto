@@ -1,6 +1,8 @@
 ﻿using MatchUpProyecto.Models;
 using MatchUpProyecto.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace MatchUpProyecto.Controllers
 {
@@ -13,7 +15,8 @@ namespace MatchUpProyecto.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View();
+            List<Pachanga> pachangas = await this.repo.GetPachangasAsync();
+            return View(pachangas);
         }
 
         //public async Task<IActionResult> VerPachangas()
@@ -30,8 +33,16 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Pachanga pachanga)
         {
-            this.repo.InsertPachangaAsync(pachanga);
-            return View();
+            if(pachanga.UbiProvincia != null)
+            {
+                await this.repo.InsertPachangaAsync(pachanga);
+                return RedirectToActionPermanent("Index");
+            }
+            else
+            {
+                return View(pachanga);
+            }
         }
     }
 }
+

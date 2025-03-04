@@ -9,19 +9,25 @@ namespace MatchUpProyecto.Models
         [Key]
         [Column("Id")]
         public int Id { get; set; }
+        [Column("Nombre")]
+        public string Nombre { get; set; }
         [Column("Ganador")]
         public int Ganador { get; set; }
         [Column("Deporte")]
         public string Deporte { get; set; }
         [Column("UbiLatitud")]
-        public float UbiLatitud { get; set; }
+        public string UbiLatitud { get; set; }
         [Column("UbiLongitud")]
-        public float UbiLongitud { get; set; }
+        public string UbiLongitud { get; set; }
         [Column("UbiProvincia")]
         public string UbiProvincia { get; set; }
         [Column("Inscripcion")]
         public decimal Inscripcion { get; set; }
+        [Column("Estado")]
+        public string Estado { get; set; }
         [Column("Acceso")]
         public string Acceso { get; set; }
+        [Column("Fecha")]
+        public DateTime Fecha { get; set; }
     }
 }
