@@ -8,7 +8,7 @@ namespace MatchUpProyecto.Data
         public MatchUpContext(DbContextOptions<MatchUpContext> options): base(options) { }
 
         public DbSet<Deporte> Deportes { get; set; }
-
         public DbSet<Pachanga> Pachangas { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
