@@ -1,0 +1,27 @@
+﻿@{
+    string usuario = Context.Session.GetString("USUARIO");
+}
+
+@if (usuario == null)
+{
+    <li>
+        <a class="nav-link text-dark"
+           asp-controller="Home"
+           asp-action="LogIn">Log In</a>
+    </li>
+}
+else
+{
+    <!-- Usuario -->
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+            <img/>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item">Perfil</a></li>
+            <li><a class="dropdown-item">Configuración</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" asp-controller="Home" asp-action="LogOut">Cerrar sesión</a></li>
+        </ul>
+    </li>
+}

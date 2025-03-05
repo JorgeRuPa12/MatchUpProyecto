@@ -80,6 +80,7 @@
                           "speed": 600,
                           "autoHeight": true,
                           "slidesPerView": "auto",
+                          "allowTouchMove": false,
                           "pagination": {
                             "el": ".swiper-pagination",
                             "type": "bullets",
@@ -147,6 +148,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+            
         // Definir mapas
         var mapP = L.map('mapP').setView([40.4168, -3.7038], 6);
         var mapT = L.map('mapT').setView([40.4168, -3.7038], 6);
