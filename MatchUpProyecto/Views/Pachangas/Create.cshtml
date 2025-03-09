@@ -1,4 +1,9 @@
 ﻿@model Pachanga
+
+@{
+    List<Deporte> deportes = Context.Session.GetObject<List<Deporte>>("DEPORTES");
+    List<Equipo> misequipos = Context.Session.GetObject<List<Equipo>>("MISEQUIPOS");
+}
 <section id="about" class="about section">
     <div class="container">
         <div class="row align-items-center justify-content-between">
@@ -39,7 +44,12 @@
 
                         <div class="mb-3">
                             <label for="Deporte" class="form-label">Deporte:</label>
-                            <input type="text" name="Deporte" class="form-control" value="@Model.Deporte" required />
+                            <select name="Deporte" class="form-control">
+                                @foreach (Deporte dep in deportes)
+                                {
+                                    <option value="@dep.Id">@dep.Nombre</option>
+                                }
+                            </select>
                         </div>
                         <input type="hidden" id="lat" name="UbiLatitud" class="form-control" required />
                         <input type="hidden" id="lng" name="UbiLongitud" class="form-control" required />
@@ -80,7 +90,11 @@
 
                         <div class="mb-3">
                             <label for="Deporte" class="form-label">Deporte:</label>
-                            <input type="text" name="Deporte" class="form-control" required />
+                            <select name="Deporte" class="form-control">
+                                @foreach(Deporte dep in deportes){
+                                    <option value="@dep.Id">@dep.Nombre</option>
+                                }
+                            </select>
                         </div>
                         <input type="hidden" id="lat" name="UbiLatitud" class="form-control" required />
                         <input type="hidden" id="lng" name="UbiLongitud" class="form-control" required />

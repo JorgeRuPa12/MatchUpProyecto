@@ -9,9 +9,11 @@ namespace MatchUpProyecto.Controllers
     public class UserController : Controller
     {
         private RepositoryUsers repo;
-        public UserController(RepositoryUsers repo)
+        private RepositoryEquipos repoE;
+        public UserController(RepositoryUsers repo, RepositoryEquipos repoE)
         {
             this.repo = repo;
+            this.repoE = repoE;
         }
         public IActionResult Index()
         {
@@ -52,6 +54,18 @@ namespace MatchUpProyecto.Controllers
                     Rol = user.Rol,
                 };
                 HttpContext.Session.SetObject("USERINFO", user);
+                List<Equipo> misequipos = await this.repoE.GetEquiposUsuarioAysnc(user.Id);
+                HttpContext.Session.SetObject("MISEQUIPOS", misequipos);
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LogOut()
+        {
+            User user = HttpContext.Session.GetObject<User>("USERINFO");
+            if (user != null)
+            {
+                HttpContext.Session.Remove("USERINFO");
             }
             return RedirectToAction("Index", "Home");
         }

@@ -1,0 +1,47 @@
+﻿@{
+    User usuario = Context.Session.GetObject<User>("USERINFO");
+}
+
+<section id="about" class="about section">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-lg-4 order-lg-1">
+                <span class="section-subtitle" data-aos="fade-up">Bienvenido a MatchUp</span>
+                <h1 class="mb-4" data-aos="fade-up">Crea tu Equipo</h1>
+                <p data-aos="fade-up">
+                   Recuerde que tienes que haber iniciado sesion para poder completar la información de tu equipo
+                </p>
+                @if (usuario != null)
+                {
+                    <form method="post" class="needs-validation" novalidate data-aos="fade-up">
+                        <div class="mb-3">
+                            <label for="Nombre" class="form-label">Nombre:</label>
+                            <input type="text" name="Nombre" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Color" class="form-label">Color:</label>
+                            <input type="text" name="Color" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Deporte" class="form-label">Deporte:</label>
+                            <input type="text" name="Deporte" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="Emblema" class="form-label">Emblema:</label>
+                            <input type="text" name="Emblema" class="form-control" required />
+                        </div>
+
+                        <input type="hidden" name="IdAdmin" value="@usuario.Id"/>
+
+                        <button type="submit" class="btn btn-primary w-100">Crear Equipo</button>
+                    </form>
+                }
+
+            </div>
+
+        </div>
+    </div>
+</section>

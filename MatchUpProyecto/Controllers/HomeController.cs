@@ -1,5 +1,7 @@
 using System.Diagnostics;
+using MatchUpProyecto.Extensions;
 using MatchUpProyecto.Models;
+using MatchUpProyecto.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatchUpProyecto.Controllers
@@ -7,14 +9,18 @@ namespace MatchUpProyecto.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private RepositoryDeportes repo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, RepositoryDeportes repo)
         {
             _logger = logger;
+            this.repo = repo;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            List<Deporte> deportes = await this.repo.GetDeportes();
+            HttpContext.Session.SetObject("DEPORTES", deportes);
             return View();
         }
 

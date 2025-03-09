@@ -1,0 +1,23 @@
+﻿@model List<Equipo>
+@{
+    ViewData["Title"] = "MisEquipos";
+}
+
+<h1>Mis Equipos</h1>
+
+<a asp-action="Insert" asp-controller="Equipos">Crea tu equipo</a>
+
+@if (Model != null)
+{
+    @foreach (Equipo equipo in Model)
+    {
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="..." alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@equipo.Nombre</h5>
+                <p class="card-text">@equipo.Deporte - @equipo.Color</p>
+                <a href="#" class="btn btn-primary">Ver Detalles</a>
+            </div>
+        </div>
+    }
+}
