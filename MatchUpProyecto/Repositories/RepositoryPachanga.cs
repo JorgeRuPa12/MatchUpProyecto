@@ -20,28 +20,70 @@ namespace MatchUpProyecto.Repositories
             return await consulta.ToListAsync();
         }
 
-        public async Task InsertPachangaAsync(Pachanga pachanga)
+        public async Task InsertPachangaAsync(Pachanga pachanga, int idequipo)
         {
-            int maxId = await this.context.Pachangas.AnyAsync()
+            int maxIdPachanga = await this.context.Pachangas.AnyAsync()
                 ? await this.context.Pachangas.MaxAsync(x => x.Id)
                 : 0;
 
-            Pachanga pachangaI = new Pachanga
+            int maxIPartido = await this.context.Partidos.AnyAsync()
+                ? await this.context.Partidos.MaxAsync(x => x.Id)
+                : 0;
+
+            int iddeporte = await this.context.Equipos
+                .Where(e => e.Id == idequipo)
+                .Select(e => e.Deporte)
+                .FirstOrDefaultAsync();
+
+            if (iddeporte != 0)
             {
-                Id = maxId + 1,
-                Nombre = pachanga.Nombre,
-                Ganador = pachanga.Ganador,
-                Deporte = pachanga.Deporte,
-                UbiLatitud = pachanga.UbiLatitud,
-                UbiLongitud = pachanga.UbiLongitud,
-                UbiProvincia = pachanga.UbiProvincia,
-                Inscripcion = pachanga.Inscripcion,
-                Estado = pachanga.Estado,
-                Acceso = pachanga.Acceso,
-                Fecha = pachanga.Fecha,
-            };
-            await this.context.Pachangas.AddAsync(pachangaI);
+                Deporte deporte = await this.context.Deportes
+                    .Where(z => z.Id == iddeporte)
+                    .FirstOrDefaultAsync();
+
+                Pachanga pachangaI = new Pachanga
+                {
+                    Id = maxIdPachanga + 1,
+                    Nombre = pachanga.Nombre,
+                    Ganador = pachanga.Ganador,
+                    Deporte = iddeporte,
+                    UbiLatitud = pachanga.UbiLatitud,
+                    UbiLongitud = pachanga.UbiLongitud,
+                    UbiProvincia = pachanga.UbiProvincia,
+                    Inscripcion = pachanga.Inscripcion,
+                    Estado = pachanga.Estado,
+                    Acceso = pachanga.Acceso,
+                    Fecha = pachanga.Fecha,
+                };
+                await this.context.Pachangas.AddAsync(pachangaI);
+
+                Partido partido = new Partido
+                {
+                    Id = maxIPartido + 1,
+                    Fecha = pachanga.Fecha,
+                    EquipoLocal = idequipo,
+                    EquipoVisitante = null,
+                    Resultado = "0",
+                    UbiLatitud = pachanga.UbiLatitud,
+                    UbiLongitud = pachanga.UbiLongitud,
+                    UbiProvincia = pachanga.UbiProvincia,
+                    Tiempo = deporte.Tiempo
+                };
+                await this.context.Partidos.AddAsync(partido);
+                await this.context.SaveChangesAsync();  // Guarda primero el partido
+
+                PachangaPartido PP = new PachangaPartido
+                {
+                    IdPachanga = pachangaI.Id,
+                    IdPartido = partido.Id,  // Ahora el Id es válido en la BD
+                    Estado = "Pendiente"
+                };
+
+                await this.context.PachangaPartido.AddAsync(PP);
+                await this.context.SaveChangesAsync();
+            }
             await this.context.SaveChangesAsync();
         }
+
     }
 }

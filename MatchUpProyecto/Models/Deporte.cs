@@ -17,5 +17,7 @@ namespace MatchUpProyecto.Models
         public int MinJugadores { get; set; }
         [Column("Imagen")]
         public string Imagen { get; set; }
+        [Column("TiempoPartido")]
+        public int Tiempo { get; set; }
     }
 }

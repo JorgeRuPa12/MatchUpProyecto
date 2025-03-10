@@ -14,7 +14,7 @@ namespace MatchUpProyecto.Models
         [Column("Ganador")]
         public int Ganador { get; set; }
         [Column("Deporte")]
-        public string Deporte { get; set; }
+        public int Deporte { get; set; }
         [Column("UbiLatitud")]
         public string UbiLatitud { get; set; }
         [Column("UbiLongitud")]

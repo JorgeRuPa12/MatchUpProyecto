@@ -31,11 +31,11 @@ namespace MatchUpProyecto.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Pachanga pachanga)
+        public async Task<IActionResult> Create(Pachanga pachanga, int idequipo)
         {
             if(pachanga.UbiProvincia != null)
             {
-                await this.repo.InsertPachangaAsync(pachanga);
+                await this.repo.InsertPachangaAsync(pachanga, idequipo);
                 return RedirectToActionPermanent("Index");
             }
             else

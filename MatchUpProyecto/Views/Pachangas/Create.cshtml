@@ -43,8 +43,8 @@
                         </div>
                         <input type="hidden" name="Deporte" value="0"/>
                         <div class="mb-3">
-                            <label for="Equipo" class="form-label">Selecciona tu Equipo:</label>
-                            <select name="Equipo" class="form-control">
+                            <label for="idequipo" class="form-label">Selecciona tu Equipo:</label>
+                            <select name="idequipo" class="form-control">
                                 @foreach (Equipo equipo in misequipos)
                                 {
                                     <option value="@equipo.Id">@equipo.Nombre</option>
@@ -88,11 +88,13 @@
                             <input type="text" name="Nombre" class="form-control" required />
                         </div>
 
+                        <input type="hidden" name="Deporte" value="0" />
                         <div class="mb-3">
-                            <label for="Deporte" class="form-label">Deporte:</label>
-                            <select name="Deporte" class="form-control">
-                                @foreach(Deporte dep in deportes){
-                                    <option value="@dep.Id">@dep.Nombre</option>
+                            <label for="idequipo" class="form-label">Selecciona tu Equipo:</label>
+                            <select name="idequipo" class="form-control">
+                                @foreach (Equipo equipo in misequipos)
+                                {
+                                    <option value="@equipo.Id">@equipo.Nombre</option>
                                 }
                             </select>
                         </div>
