@@ -41,13 +41,13 @@
                             <label for="Nombre" class="form-label">Nombre del Partido:</label>
                             <input type="text" name="Nombre" class="form-control" value="@Model.Nombre" required />
                         </div>
-
+                        <input type="hidden" name="Deporte" value="0"/>
                         <div class="mb-3">
-                            <label for="Deporte" class="form-label">Deporte:</label>
-                            <select name="Deporte" class="form-control">
-                                @foreach (Deporte dep in deportes)
+                            <label for="Equipo" class="form-label">Selecciona tu Equipo:</label>
+                            <select name="Equipo" class="form-control">
+                                @foreach (Equipo equipo in misequipos)
                                 {
-                                    <option value="@dep.Id">@dep.Nombre</option>
+                                    <option value="@equipo.Id">@equipo.Nombre</option>
                                 }
                             </select>
                         </div>

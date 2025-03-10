@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("SqlMatchUpCasa");
+string connectionString = builder.Configuration.GetConnectionString("SqlMatchUp");
 
 
 builder.Services.AddSingleton<HelperSessionContextAccesor>();
@@ -21,7 +21,7 @@ builder.Services.AddTransient<RepositoryEquipos>();
 builder.Services.AddDbContext<MatchUpContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(5);
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
 });
 
 var app = builder.Build();

@@ -9,7 +9,7 @@ namespace MatchUpProyecto.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private RepositoryDeportes repo;
+        private RepositoryDeportes repoD;
 
         public HomeController(ILogger<HomeController> logger, RepositoryDeportes repo)
         {
@@ -19,7 +19,7 @@ namespace MatchUpProyecto.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Deporte> deportes = await this.repo.GetDeportes();
+            List<Deporte> deportes = await this.repoD.GetDeportes();
             HttpContext.Session.SetObject("DEPORTES", deportes);
             return View();
         }

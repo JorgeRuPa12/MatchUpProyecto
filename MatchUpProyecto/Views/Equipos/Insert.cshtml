@@ -1,5 +1,6 @@
 ﻿@{
     User usuario = Context.Session.GetObject<User>("USERINFO");
+    List<Deporte> deportes = Context.Session.GetObject<List<Deporte>>("DEPORTES");
 }
 
 <section id="about" class="about section">
@@ -26,7 +27,11 @@
 
                         <div class="mb-3">
                             <label for="Deporte" class="form-label">Deporte:</label>
-                            <input type="text" name="Deporte" class="form-control" required />
+                            <select name="Deporte" class="form-control">
+                                @foreach(Deporte dep in deportes){
+                                    <option value="@dep.Id">@dep.Nombre</option>
+                                }
+                            </select>
                         </div>
 
                         <div class="mb-3">
