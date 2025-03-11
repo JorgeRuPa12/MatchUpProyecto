@@ -15,8 +15,10 @@ namespace MatchUpProyecto.Models
         public string Email { get; set; }
         [Column("Imagen")]
         public string Imagen { get; set; }
+        [Column("Salt")]
+        public string Salt { get; set; }
         [Column("Pass")]
-        public string Pass { get; set; }
+        public byte[] Pass { get; set; }
         [Column("Rol")]
         public string Rol { get; set; }
     }

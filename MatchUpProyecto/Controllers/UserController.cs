@@ -1,8 +1,12 @@
 ﻿using MatchUpProyecto.Extensions;
 using MatchUpProyecto.Models;
 using MatchUpProyecto.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
+using MatchUpProyecto.Filters;
 
 namespace MatchUpProyecto.Controllers
 {
@@ -20,16 +24,22 @@ namespace MatchUpProyecto.Controllers
             return View();
         }
 
+        [AuthorizeUsers]
+        public IActionResult Perfil()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Register()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(User user)
+        public async Task<IActionResult> Register(User user, string password)
         {
             user.Imagen = "defaultuser.jpg";
-            await this.repo.InsertUser(user);
+            await this.repo.InsertUser(user, password);
             return View();
         }
 
@@ -41,23 +51,35 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> LogIn(string correo, string pass)
         {
-            User user = await this.repo.GetUserAsync(correo, pass);
+            User user = await this.repo.LogInEmpleadosAsync(correo, pass);
             if (user != null)
             {
-                User userObj = new User
-                {
-                    Id = user.Id,
-                    Nombre = user.Nombre,
-                    Email = user.Email,
-                    Imagen = user.Imagen,
-                    Pass = "0",
-                    Rol = user.Rol,
-                };
-                HttpContext.Session.SetObject("USERINFO", user);
-                List<Equipo> misequipos = await this.repoE.GetEquiposUsuarioAysnc(user.Id);
-                HttpContext.Session.SetObject("MISEQUIPOS", misequipos);
+                ClaimsIdentity identity = new ClaimsIdentity(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    ClaimTypes.Name, ClaimTypes.Role
+                    );
+                Claim claimName = new Claim(ClaimTypes.Name, user.Nombre);
+                identity.AddClaim(claimName);
+                Claim claimId = new Claim(("Id"), user.Id.ToString());
+                identity.AddClaim(claimId);
+                Claim claimRol = new Claim(ClaimTypes.Role, user.Rol);
+                identity.AddClaim(claimRol);
+                Claim claimEmail = new Claim(ClaimTypes.Email, user.Email);
+                identity.AddClaim(claimEmail);
+                Claim claimImagen = new Claim("Imagen", user.Imagen);
+                identity.AddClaim(claimImagen);
+                ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    userPrincipal
+                    );
+                return RedirectToAction("Perfil");
             }
-            return RedirectToAction("Index", "Home");
+            else
+            {
+                ViewData["MENSAJE"] = "Credenciales incorrectos";
+                return View();
+            }
         }
 
         public async Task<IActionResult> LogOut()

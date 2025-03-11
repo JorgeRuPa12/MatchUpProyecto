@@ -1,4 +1,5 @@
 ﻿using MatchUpProyecto.Data;
+using MatchUpProyecto.Helpers;
 using MatchUpProyecto.Models;
 using Microsoft.EntityFrameworkCore;
 using MvcNetCoreSession.Helpers;
@@ -16,19 +17,20 @@ namespace MatchUpProyecto.Repositories
             this.contextAccesor = contextAccesor;
         }
 
-        public async Task InsertUser(User user)
+        public async Task InsertUser(User user,string password)
         {
             int maxId = await this.context.Users.AnyAsync()
                 ? await this.context.Users.MaxAsync(x => x.Id)
                 : 0;
-
+            string salt = HelperCryptography.GenerateSalt();
             User userObj = new User
             {
                 Id = maxId + 1,
                 Nombre = user.Nombre,
                 Email = user.Email,
                 Imagen = user.Imagen,
-                Pass = user.Pass,
+                Salt = salt,
+                Pass = HelperCryptography.EncryptPassword(password, salt),
                 Rol = user.Rol,
 
             };
@@ -36,11 +38,28 @@ namespace MatchUpProyecto.Repositories
             await this.context.SaveChangesAsync();
         }
 
-        public async Task<User> GetUserAsync(string correo, string password)
+        public async Task<User> LogInEmpleadosAsync(string correo, string password)
         {
-            var consulta =  this.context.Users.Where(z => z.Email == correo && z.Pass == password).FirstOrDefaultAsync();
-
-            return  await consulta;
+            User user = await this.context.Users.Where(x => x.Email == correo).FirstOrDefaultAsync();
+            if(user == null)
+            {
+                return null;
+            }
+            else
+            {
+                string salt = user.Salt;
+                byte[] temp = HelperCryptography.EncryptPassword(password, salt);
+                byte[] passBytes = user.Pass;
+                bool response = HelperCryptography.CompararArrays(temp, passBytes);
+                if(response == true)
+                {
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
     }
 }
