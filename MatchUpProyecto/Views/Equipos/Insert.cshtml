@@ -12,7 +12,7 @@
                 <p data-aos="fade-up">
                    Recuerde que tienes que haber iniciado sesion para poder completar la información de tu equipo
                 </p>
-                @if (usuario != null)
+                @if (Context.User.Identity.IsAuthenticated)
                 {
                     <form method="post" class="needs-validation" novalidate data-aos="fade-up">
                         <div class="mb-3">
@@ -39,7 +39,7 @@
                             <input type="text" name="Emblema" class="form-control" required />
                         </div>
 
-                        <input type="hidden" name="IdAdmin" value="@usuario.Id"/>
+                        <input type="hidden" name="IdAdmin" value="@Context.User.FindFirst("Id").Value"/>
 
                         <button type="submit" class="btn btn-primary w-100">Crear Equipo</button>
                     </form>

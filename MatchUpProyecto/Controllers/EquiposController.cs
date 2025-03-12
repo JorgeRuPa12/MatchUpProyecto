@@ -1,4 +1,5 @@
-﻿using MatchUpProyecto.Models;
+﻿using MatchUpProyecto.Filters;
+using MatchUpProyecto.Models;
 using MatchUpProyecto.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,12 +19,14 @@ namespace MatchUpProyecto.Controllers
             return View(equipos);
         }
 
+        [AuthorizeUser]
         public IActionResult Insert()
         {
 
             return View();
         }
 
+        [AuthorizeUser]
         [HttpPost]
         public async Task<IActionResult> Insert(Equipo equipo)
         {

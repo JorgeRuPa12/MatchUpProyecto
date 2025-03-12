@@ -24,7 +24,7 @@ namespace MatchUpProyecto.Controllers
             return View();
         }
 
-        [AuthorizeUsers]
+        [AuthorizeUser]
         public IActionResult Perfil()
         {
             return View();
@@ -84,11 +84,7 @@ namespace MatchUpProyecto.Controllers
 
         public async Task<IActionResult> LogOut()
         {
-            User user = HttpContext.Session.GetObject<User>("USERINFO");
-            if (user != null)
-            {
-                HttpContext.Session.Remove("USERINFO");
-            }
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
         }
     }

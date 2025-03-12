@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatchUpProyecto.Filters
 {
-    public class AuthorizeUsersAttribute: AuthorizeAttribute
+    public class AuthorizeUserAttribute: AuthorizeAttribute, IAuthorizationFilter
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {

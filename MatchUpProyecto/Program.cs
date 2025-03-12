@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("SqlMatchUpCasa");
+string connectionString = builder.Configuration.GetConnectionString("SqlMatchUp");
 
 
 builder.Services.AddSingleton<HelperSessionContextAccesor>();
@@ -20,7 +20,7 @@ builder.Services.AddTransient<RepositoryPachanga>();
 builder.Services.AddTransient<RepositoryUsers>();
 builder.Services.AddTransient<RepositoryEquipos>();
 builder.Services.AddDbContext<MatchUpContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(10);
@@ -44,11 +44,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection(); 
 app.UseStaticFiles();
-app.UseRouting();
+//app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
+//app.MapStaticAssets();
 app.UseSession();
 app.UseMvc(routes =>
 {
