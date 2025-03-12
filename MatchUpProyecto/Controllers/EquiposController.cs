@@ -30,6 +30,7 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> Insert(Equipo equipo)
         {
+            equipo.Emblema = "emblema" + equipo.Emblema + ".jpg";
             await this.repo.InsertEquipoAsync(equipo);
             return RedirectToAction("Index");
         }
@@ -38,6 +39,29 @@ namespace MatchUpProyecto.Controllers
         {
             List<Equipo> misEquipos = await this.repo.GetEquiposUsuarioAysnc(idusuario);
             return View(misEquipos);
+        }
+
+        [AuthorizeUser]
+        public async Task<IActionResult> Detalles(int idequipo)
+        {
+            EquipoDetalle equipoDetalle = await this.repo.GetEquipoDetalleAsync(idequipo);
+            return View(equipoDetalle);
+        }
+
+        public async Task<IActionResult> Join(int idequipo)
+        {
+            string dato = HttpContext.User.FindFirst("Id").Value;
+            int idusuario = int.Parse(dato);
+            await this.repo.UnirseEquipoAsync(idequipo, idusuario);
+            return RedirectToAction("MisEquipos");
+        }
+        
+        public async Task<IActionResult> Leave(int idequipo)
+        {
+            string dato = HttpContext.User.FindFirst("Id").Value;
+            int idusuario = int.Parse(dato);
+            await this.repo.SalirseEquipoAsync(idequipo, idusuario);
+            return RedirectToAction("MisEquipos");
         }
     }
 }

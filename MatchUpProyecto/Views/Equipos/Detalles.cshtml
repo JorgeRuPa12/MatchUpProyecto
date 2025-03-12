@@ -1,0 +1,35 @@
+﻿@model EquipoDetalle
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+
+<h1>@Model.Detalles.Nombre</h1>
+<h2>Número de jugadores: @Model.NumJugadores</h2>
+<a class="btn btn-success" asp-controller="Equipos" asp-action="Join" asp-route-idequipo="@Model.Detalles.Id">Unirse</a>
+<a class="btn btn-success" asp-controller="Equipos" asp-action="Leave" asp-route-idequipo="@Model.Detalles.Id">Abandonar</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(User jugador in Model.Jugadores){
+            <tr>
+                <td>
+                    <img src="~/img/users/@jugador.Imagen" alt="Usuario" class="rounded-circle me-2" width="32" height="32" />
+                </td>
+                <td>@jugador.Nombre</td>
+                <td>@jugador.Email</td>
+                <td><a class="btn btn-outline-danger">Expulsar</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+

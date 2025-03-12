@@ -40,7 +40,7 @@ namespace MatchUpProyecto.Controllers
         {
             user.Imagen = "defaultuser.jpg";
             await this.repo.InsertUser(user, password);
-            return View();
+            return RedirectToAction("Login");
         }
 
         public async Task<IActionResult> LogIn()

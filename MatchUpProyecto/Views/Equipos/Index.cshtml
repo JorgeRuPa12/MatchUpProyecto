@@ -4,11 +4,11 @@
 @if(Model != null){
     @foreach(Equipo equipo in Model){
         <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="..." alt="Card image cap">
+            <img class="card-img-top" src="~/img/escudos/@equipo.Emblema" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">@equipo.Nombre</h5>
                 <p class="card-text">@equipo.Deporte - @equipo.Color</p>
-                <a href="#" class="btn btn-primary">Ver Detalles</a>
+                <a class="btn btn-primary" asp-action="Detalles" asp-controller="Equipos" asp-route-idequipo="@equipo.Id">Ver Detalles</a>
             </div>
         </div>
     }

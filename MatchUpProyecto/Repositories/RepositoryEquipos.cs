@@ -52,5 +52,48 @@ namespace MatchUpProyecto.Repositories
                           where ue.IdUsuario == idusuario
                           select e).ToListAsync();
         }
+
+        public async Task<EquipoDetalle> GetEquipoDetalleAsync(int idequipo)
+        {
+            var jugadores = await (from ue in this.context.UsuariosEquipo
+                           join u in this.context.Users on ue.IdUsuario equals u.Id
+                           where ue.IdEquipo == idequipo
+                           select u).ToListAsync();
+
+            int numJugadores = jugadores.Count();
+            Equipo team = await this.context.Equipos.Where(z => z.Id == idequipo).FirstOrDefaultAsync();
+
+            EquipoDetalle equipoDetalle = new EquipoDetalle
+            {
+                Jugadores = jugadores,
+                Detalles = team,
+                NumJugadores = numJugadores
+            };
+            return equipoDetalle;
+        }
+
+        public async Task UnirseEquipoAsync(int idequipo, int idusuario)
+        {
+            UsuarioEquipo model = new UsuarioEquipo
+            {
+                IdEquipo = idequipo,
+                IdUsuario = idusuario
+            };
+
+            await this.context.UsuariosEquipo.AddAsync(model);
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task SalirseEquipoAsync(int idequipo, int idusuario)
+        {
+            UsuarioEquipo model = new UsuarioEquipo
+            {
+                IdEquipo = idequipo,
+                IdUsuario = idusuario
+            };
+
+            this.context.UsuariosEquipo.Remove(model);
+            await this.context.SaveChangesAsync();
+        }
     }
 }

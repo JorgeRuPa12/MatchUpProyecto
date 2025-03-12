@@ -1,6 +1,7 @@
 ﻿@{
     User usuario = Context.Session.GetObject<User>("USERINFO");
     List<Deporte> deportes = Context.Session.GetObject<List<Deporte>>("DEPORTES");
+    List<int> numeros = [1, 2, 3, 4, 5];
 }
 
 <section id="about" class="about section">
@@ -36,7 +37,14 @@
 
                         <div class="mb-3">
                             <label for="Emblema" class="form-label">Emblema:</label>
-                            <input type="text" name="Emblema" class="form-control" required />
+                            <select id="Emblema" name="Emblema" class="form-control">
+                                @foreach (var num in numeros)
+                                {
+                                    <option value="@num" data-image="@num">
+                                        Emblema @num
+                                    </option>
+                                }
+                            </select>
                         </div>
 
                         <input type="hidden" name="IdAdmin" value="@Context.User.FindFirst("Id").Value"/>
@@ -50,3 +58,25 @@
         </div>
     </div>
 </section>
+
+<!-- Agregar Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#Emblema').select2({
+            templateResult: function(option) {
+                if (!option.id) { return option.text; }
+                var img = $(option.element).data('image');
+                return $('<span><img src="/img/escudos/emblema' + img + '.jpg" width="40" style="margin-right:10px;">' + option.text + '</span>');
+            },
+            templateSelection: function(option) {
+                if (!option.id) { return option.text; }
+                var img = $(option.element).data('image');
+                return $('<span><img src="/img/escudos/emblema' + img + '.jpg" width="20" style="margin-right:5px;">' + option.text + '</span>');
+            }
+        });
+    });
+</script>
