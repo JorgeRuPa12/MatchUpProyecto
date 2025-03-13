@@ -35,6 +35,7 @@ namespace MatchUpProyecto.Controllers
             return RedirectToAction("Index");
         }
 
+        [AuthorizeUser]
         public async Task<IActionResult> MisEquipos(int idusuario)
         {
             List<Equipo> misEquipos = await this.repo.GetEquiposUsuarioAysnc(idusuario);

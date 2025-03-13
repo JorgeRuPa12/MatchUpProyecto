@@ -5,6 +5,7 @@
     List<Equipo> misequipos = Context.Session.GetObject<List<Equipo>>("MISEQUIPOS");
 }
 <section id="about" class="about section">
+    
     <div class="container">
         <div class="row align-items-center justify-content-between">
             <!-- Mapa -->
@@ -16,7 +17,7 @@
                     <div class="swiper-pagination"></div>
                 </div>
             </div>
-
+            
             <!-- Formulario -->
             <div class="col-lg-4 order-lg-1">
                 <span class="section-subtitle" data-aos="fade-up">Bienvenido a MatchUp</span>
@@ -24,6 +25,7 @@
                 <p data-aos="fade-up">
                     Selecciona una ubicación en el mapa y completa la información de tu partido.
                 </p>
+                
                 @if (Model != null)
                 {
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -130,11 +132,15 @@
                     </form>
                 }
                 
+                
             </div>
-
         </div>
+         
     </div>
+    
+
 </section>
+@section Scripts {
 <!-- Agregar la librería Turf.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Turf.js/6.5.0/turf.min.js"></script>
 <script>
@@ -161,29 +167,31 @@
     var provinciasLayer; // Guardar la capa de provincias
     var geojsonData;  // Guardar los datos GeoJSON para futuras consultas
 
-    fetch('/geo/spain-provinces.geojson')
-        .then(response => response.json())
-        .then(data => {
-            geojsonData = data; // Guardamos los datos del GeoJSON
+        fetch('/geo/spain-provinces.txt') // Cambia la extensión a .txt
+        .then(response => response.text()) // Leer como texto
+        .then(text => {
+            try {
+                let data = JSON.parse(text); // Convertir manualmente a JSON
+                geojsonData = data; // Guardamos los datos del GeoJSON
 
-            provinciasLayer = L.geoJSON(data, {
-                style: function (feature) {
-                    return { color: "rgba(31, 82, 44, 0.5)", weight: 2, fillOpacity: 0.2 };
-                },
-                onEachFeature: function (feature, layer) {
-                    layer.on('click', function (e) {
-                        // Obtener el nombre de la comunidad autónoma
-                        var nombreComunidad = feature.properties.name;
+                provinciasLayer = L.geoJSON(data, {
+                    style: function (feature) {
+                        return { color: "rgba(31, 82, 44, 0.5)", weight: 2, fillOpacity: 0.2 };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.on('click', function (e) {
+                            var nombreComunidad = feature.properties.name;
+                            document.getElementById("provincia").value = nombreComunidad;
+                            e.originalEvent.stopPropagation();
+                        });
+                    }
+                }).addTo(map);
+            } catch (error) {
+                console.error("Error al parsear el JSON:", error);
+            }
+        })
+        .catch(error => console.error('Error al cargar el archivo:', error));
 
-                        // Mostrarlo en el input
-                        document.getElementById("provincia").value = nombreComunidad;
-
-                        // Evitar que el clic se propague al mapa
-                        e.originalEvent.stopPropagation();
-                    });
-                }
-            }).addTo(map);
-        }).catch(error => console.error('Error al cargar el GeoJSON:', error));
 
     // Crear marcador arrastrable en Madrid
     var marker = L.marker([40.4168, -3.7038], { draggable: true }).addTo(map);
@@ -227,3 +235,4 @@
         }
     });
 </script>
+}

@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("SqlMatchUpCasa");
+string connectionString = builder.Configuration.GetConnectionString("SqlMatchUp");
 
 
 builder.Services.AddSingleton<HelperSessionContextAccesor>();

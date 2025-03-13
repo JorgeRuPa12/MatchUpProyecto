@@ -85,5 +85,30 @@ namespace MatchUpProyecto.Repositories
             await this.context.SaveChangesAsync();
         }
 
+        public async Task<List<PartidoEquipos>> ObtenerPartidosPorPachanga()
+        {
+
+            List<Partido> partidos = await this.context.Partidos.ToListAsync();
+            List<PartidoEquipos> partidosLista = new List<PartidoEquipos>();
+
+            foreach(Partido par in partidos)
+            {
+                Equipo local = await this.context.Equipos.Where(z => z.Id == par.EquipoLocal).FirstOrDefaultAsync();
+                Equipo visitante = await this.context.Equipos.Where(z => z.Id == par.EquipoVisitante).FirstOrDefaultAsync();
+                PachangaPartido pp = await this.context.PachangaPartido.Where(z => z.IdPartido == par.Id).FirstOrDefaultAsync();
+                Pachanga pachanga = await this.context.Pachangas.Where(z => z.Id == pp.IdPachanga).FirstOrDefaultAsync();
+                PartidoEquipos pe = new PartidoEquipos
+                {
+                    Match = par,
+                    Pacha = pachanga,
+                    Local = local,
+                    Visitante = visitante
+                };
+                partidosLista.Add(pe);
+            }
+
+            return partidosLista;
+        }
+
     }
 }

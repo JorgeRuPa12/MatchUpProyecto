@@ -1,4 +1,4 @@
-﻿@model List<Pachanga>
+﻿@model List<PartidoEquipos>
 
 @{
     ViewData["Title"] = "Index";
@@ -172,27 +172,58 @@
                 attribution: '© OpenStreetMap'
             }).addTo(map);
         });
-
         // Lista de partidos desde el modelo
         var partidos = [
-    @foreach (var pachanga in Model)
+    @foreach (PartidoEquipos pachanga in Model)
     {
+        var escudoVisitante = pachanga.Visitante != null
+           ? Url.Content("~/img/escudos/" + pachanga.Visitante.Emblema)
+           : Url.Content("~/img/escudos/noteam.jpg"); // Imagen por defecto
+
+        var nombreVisitante = pachanga.Visitante?.Nombre ?? "Por confirmar";
+
         <text>
-                        {
-                            "nombre": "@pachanga.Nombre",
-                            "latitud": @pachanga.UbiLatitud,
-                            "longitud": @pachanga.UbiLongitud
-                        },
+                {
+                    "nombreLocal": "@pachanga.Local.Nombre",
+                    "nombreVisitante": "@nombreVisitante",
+                    "latitud": @pachanga.Match.UbiLatitud,
+                    "longitud": @pachanga.Match.UbiLongitud,
+                    "dia": "@pachanga.Match.Fecha.ToString("dddd, dd MMM")",
+                    "hora": "@pachanga.Match.Fecha.ToString("HH:mm")",
+                    "marcador": "1 - 2",
+                    "escudoLocal": "@Url.Content("~/img/escudos/" + pachanga.Local.Emblema)",
+                    "escudoVisitante": "@escudoVisitante"
+                },
         </text>
     }
-        ];
+    ];
 
-        // Agregar marcadores a cada mapa con los partidos
-        partidos.forEach(function (partido) {
-            L.marker([partido.latitud, partido.longitud])
-                .addTo(mapP) // Puedes cambiar a mapT o mapL si aplican
-                .bindPopup("<b>" + partido.nombre + "</b>");
-        });
+    // Agregar marcadores a cada mapa con los partidos
+    partidos.forEach(function (partido) {
+        L.marker([partido.latitud, partido.longitud])
+            .addTo(mapP)
+            .bindPopup(`
+                <div style="width: 250px; text-align: center; font-family: Arial, sans-serif;">
+                    <p style="color: gray; font-size: 12px;">${partido.marcador}</p>
+                    <h2 style="font-size: 20px; font-weight: bold;">${partido.hora}</h2>
+                    <p style="font-size: 14px; margin-bottom: 10px;">${partido.dia}</p>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="text-align: center;">
+                            <img src="${partido.escudoLocal}" alt="${partido.nombreLocal}" style="width: 50px; height: 50px;">
+                            <p style="font-size: 14px; font-weight: bold;">${partido.nombreLocal}</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <p style="font-size: 18px; font-weight: bold;">VS</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <img src="${partido.escudoVisitante}" alt="${partido.nombreVisitante}" style="width: 50px; height: 50px;">
+                            <p style="font-size: 14px; font-weight: bold;">${partido.nombreVisitante}</p>
+                        </div>
+                    </div>
+                </div>
+            `);
+    });
     });
 </script>
 

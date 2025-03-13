@@ -1,15 +1,33 @@
 ﻿@model List<Equipo>
-<a asp-action="Insert" asp-controller="Equipos">Crea tu equipo</a>
+@{
+    ViewData["Title"] = "Equipos";
+}
 
-@if(Model != null){
-    @foreach(Equipo equipo in Model){
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/img/escudos/@equipo.Emblema" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@equipo.Nombre</h5>
-                <p class="card-text">@equipo.Deporte - @equipo.Color</p>
-                <a class="btn btn-primary" asp-action="Detalles" asp-controller="Equipos" asp-route-idequipo="@equipo.Id">Ver Detalles</a>
-            </div>
+<h1>Mis Equipos</h1>
+
+<a asp-action="Insert" asp-controller="Equipos" class="btn btn-success mb-3">Crea tu equipo</a>
+
+@if (Model != null && Model.Any())
+{
+    <div class="container">
+        <div class="row">
+            @foreach (Equipo equipo in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="width: 100%;">
+                        <img class="card-img-top" src="~/img/escudos/@equipo.Emblema" alt="Escudo de @equipo.Nombre">
+                        <div class="card-body">
+                            <h5 class="card-title">@equipo.Nombre</h5>
+                            <p class="card-text">@equipo.Deporte - @equipo.Color</p>
+                            <a href="#" class="btn btn-primary">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-    }
+    </div>
+}
+else
+{
+    <p>No tienes equipos registrados.</p>
 }
