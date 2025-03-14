@@ -23,8 +23,6 @@
                         <img id="avatarImg" src="~/img/users/@Context.User.FindFirst("Imagen").Value" alt="avatar"
                                  class="rounded-circle img-fluid" style="width: 150px; cursor: pointer">
                         <h5 class="my-3">@Context.User.Identity.Name</h5>
-                        <p class="text-muted mb-1">Full Stack Developer</p>
-                        <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
                     </div>
                 </div>
                 <div class="card mb-4 mb-lg-0">
@@ -72,24 +70,6 @@
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0">@Context.User.FindFirst(ClaimTypes.Email).Value</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Mobile</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">(098) 765-4321</p>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <p class="mb-0">Address</p>
-                            </div>
-                            <div class="col-sm-9">
-                                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
                             </div>
                         </div>
                     </div>
@@ -156,7 +136,7 @@
                                                         }
                                                         @if (DateTime.Now > par.Match.Fecha && par.Match.Resultado == "Por Determinar" && par.Visitante != null)
                                                         {
-                                                            <button id="btnResultado" class="btn btn-warning mt-2" value="@par.Match.Id">Ingresar Resultado</button>
+                                                             <button id="btnResultado" class="btn btn-warning mt-2" value="@par.Match.Id">Ingresar Resultado</button>
                                                         }
                                                     </div>
                                                 </div>

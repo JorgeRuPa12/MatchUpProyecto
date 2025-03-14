@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - Active Bootstrap Template</title>
+    <title>MatchUp</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
     <!-- Favicons -->
-    <link href="~/img/favicon.png" rel="icon">
+    <link href="~/img/icono-deporte.png" rel="icon">
     <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Fonts -->
@@ -44,7 +44,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a aasp-controller="Home" asp-action="Index" class="logo d-flex align-items-center">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
                 <h1 class="sitename">MatchUp</h1>
@@ -53,7 +53,6 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a asp-action="Index" asp-controller="Home">Home</a></li>
-                    <li><a asp-action="Index" asp-controller="Deportes">Deportes</a></li>
                     <li><a asp-action="Index" asp-controller="Equipos">Equipos</a></li>
                     <li><a asp-action="Index" asp-controller="Pachangas">Pachangas</a></li>
                     <partial name="_MenuUsuario" />
@@ -92,74 +91,33 @@
             <div class="row g-4">
                 <div class="col-md-6 col-lg-3 mb-3 mb-md-0">
                     <div class="widget">
-                        <h3 class="widget-heading">About Us</h3>
+                        <h3 class="widget-heading">Sobre Nosotros</h3>
                         <p class="mb-4">
-                            There live the blind texts. Separated they live in Bookmarksgrove
-                            right at the coast of the Semantics, a large language ocean.
+                            MatchUp se centra en crear una comunidad sana y sin trampas en la que poder jugar
+                            partidos amistosos entre equipos.
                         </p>
                         <p class="mb-0">
-                            <a href="#" class="btn-learn-more">Learn more</a>
+                            <a asp-controller="Pachangas" asp-action="Index" class="btn-learn-more">Vamos a jugar</a>
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3 ps-lg-5 mb-3 mb-md-0">
+                <div class="col-md-6 col-lg-3 ps-lg-4 mb-3 mb-md-0">
                     <div class="widget">
-                        <h3 class="widget-heading">Navigation</h3>
+                        <h3 class="widget-heading">Navegación</h3>
                         <ul class="list-unstyled float-start me-5">
-                            <li><a href="#">Overview</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Find Buyers</a></li>
-                        </ul>
-                        <ul class="list-unstyled float-start">
-                            <li><a href="#">Overview</a></li>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Services</a></li>
+                            <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+                            <li><a asp-action="Index" asp-controller="Equipos">Equipos</a></li>
+                            <li><a asp-action="Index" asp-controller="Pachangas">Pachangas</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-6 col-lg-3 pl-lg-5">
-                    <div class="widget">
-                        <h3 class="widget-heading">Recent Posts</h3>
-                        <ul class="list-unstyled footer-blog-entry">
-                            <li>
-                                <span class="d-block date">May 3, 2020</span>
-                                <a href="#">There live the Blind Texts</a>
-                            </li>
-                            <li>
-                                <span class="d-block date">May 3, 2020</span>
-                                <a href="#">Separated they live in Bookmarksgrove right</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-3 pl-lg-5">
-                    <div class="widget">
-                        <h3 class="widget-heading">Connect</h3>
-                        <ul class="list-unstyled social-icons light mb-3">
-                            <li>
-                                <a href="#"><span class="bi bi-facebook"></span></a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="bi bi-twitter-x"></span></a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="bi bi-linkedin"></span></a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="bi bi-google"></span></a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="bi bi-google-play"></span></a>
-                            </li>
-                        </ul>
-                    </div>
-
+                <div class="col-md-6 col-lg-3 pl-lg-6">
                     <div class="widget">
                         <div class="footer-subscribe">
-                            <h3 class="widget-heading">Subscribe</h3>
+                            <h3 class="widget-heading">Contáctanos</h3>
                             <form action="forms/newsletter.php" method="post" class="php-email-form">
                                 <div class="mb-2">
-                                    <input type="text" class="form-control" name="email" placeholder="Enter your email">
+                                    <input type="text" class="form-control" name="email" placeholder="Introduce tu mensaje">
 
                                     <button type="submit" class="btn btn-link">
                                         <span class="bi bi-arrow-right"></span>
@@ -172,6 +130,25 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 pl-lg-5">
+                    <div class="widget">
+                        <h3 class="widget-heading">Síguenos</h3>
+                        <ul class="list-unstyled social-icons light mb-3">
+                            <li>
+                                <a href="#"><span class="bi bi-facebook"></span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="bi bi-twitter-x"></span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="bi bi-instagram"></span></a>
+                            </li>
+                            <li>
+                                <a href="#"><span class="bi bi-google-play"></span></a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

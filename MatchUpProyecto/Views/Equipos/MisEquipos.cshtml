@@ -3,9 +3,13 @@
     ViewData["Title"] = "Mis Equipos";
 }
 
-<h1>Mis Equipos</h1>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="m-0">Mis Equipos</h1>
+        <a asp-action="Insert" asp-controller="Equipos" class="btn btn-success">Crea tu equipo</a>
+    </div>
+</div>
 
-<a asp-action="Insert" asp-controller="Equipos" class="btn btn-success mb-3">Crea tu equipo</a>
 
 @if (Model != null && Model.Any())
 {

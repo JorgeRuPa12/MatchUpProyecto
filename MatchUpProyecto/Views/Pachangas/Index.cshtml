@@ -6,10 +6,13 @@
         ? (List<Equipo>)ViewData["Equipos"]
         : new List<Equipo>();
 }
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
 
-<h1>Index</h1>
-
-<a asp-controller="Pachangas" asp-action="Create">Crear Pachanga</a>
+        <h1 class="m-0">Partidos</h1>
+        <a asp-controller="Pachangas" asp-action="Create">Crear Pachanga</a>
+    </div>
+</div>
 <!-- Tabs Section -->
 <section id="tabs" class="tabs section light-background">
 
