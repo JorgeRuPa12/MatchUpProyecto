@@ -19,7 +19,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@equipo.Nombre</h5>
                             <p class="card-text">@equipo.Deporte - @equipo.Color</p>
-                            <a href="#" class="btn btn-primary">Ver Detalles</a>
+                            <a asp-controller="Equipos" asp-action="Detalles" asp-route-idequipo="@equipo.Id" class="btn btn-primary">Ver Detalles</a>
                         </div>
                     </div>
                 </div>

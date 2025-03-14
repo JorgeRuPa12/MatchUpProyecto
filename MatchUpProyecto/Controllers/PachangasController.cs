@@ -20,7 +20,20 @@ namespace MatchUpProyecto.Controllers
         public async Task<IActionResult> Index()
         {
             List<PartidoEquipos> partidos = await this.repo.ObtenerPartidosPorPachanga();
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                List<Equipo> equipos = await this.repoE.GetEquiposUsuarioAysnc(int.Parse(HttpContext.User.FindFirst("Id").Value));
+                ViewData["Equipos"] = equipos;
+            }
             return View(partidos);
+        }
+
+        [AuthorizeUser]
+        [HttpPost]
+        public async Task<IActionResult> Index(int idequipo, int idpartido)
+        {
+            await this.repoE.UnirEquipoPartido(idequipo, idpartido);
+            return RedirectToAction("Index");
         }
 
         //public async Task<IActionResult> VerPachangas()
@@ -48,13 +61,14 @@ namespace MatchUpProyecto.Controllers
             if(pachanga.UbiProvincia != null)
             {
                 await this.repo.InsertPachangaAsync(pachanga, idequipo);
-                return RedirectToActionPermanent("Index");
+                return RedirectToAction("Index");
             }
             else
             {
                 return View(pachanga);
             }
         }
+
     }
 }
 

@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    var equipos = Context.User.Identity.IsAuthenticated && ViewData["Equipos"] != null
+        ? (List<Equipo>)ViewData["Equipos"]
+        : new List<Equipo>();
 }
 
 <h1>Index</h1>
@@ -142,9 +145,11 @@
 </section>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    var equiposUsuario = @Html.Raw(Json.Serialize(equipos));
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -190,9 +195,10 @@
                     "longitud": @pachanga.Match.UbiLongitud,
                     "dia": "@pachanga.Match.Fecha.ToString("dddd, dd MMM")",
                     "hora": "@pachanga.Match.Fecha.ToString("HH:mm")",
-                    "marcador": "1 - 2",
+                    "marcador": "@pachanga.Match.Resultado",
                     "escudoLocal": "@Url.Content("~/img/escudos/" + pachanga.Local.Emblema)",
-                    "escudoVisitante": "@escudoVisitante"
+                    "escudoVisitante": "@escudoVisitante",
+                    "idpartido": @pachanga.Match.Id
                 },
         </text>
     }
@@ -221,10 +227,47 @@
                             <p style="font-size: 14px; font-weight: bold;">${partido.nombreVisitante}</p>
                         </div>
                     </div>
+                    ${partido.escudoVisitante === "/img/escudos/noteam.jpg" ? `
+                    <button onclick="mostrarFormularioInscripcion(${partido.idpartido})" class="btn btn-success">
+                        Inscribirse
+                    </button>
+                ` : ''}
                 </div>
             `);
     });
+    
     });
+
+        function mostrarFormularioInscripcion(idpartido) {
+        let selectOptions = "";
+
+        if (equiposUsuario.length > 0) {
+            equiposUsuario.forEach(equipo => {
+                selectOptions += `<option value="${equipo.id}">${equipo.nombre}</option>`;
+            });
+        } else {
+            selectOptions = `<option disabled>No tienes equipos disponibles</option>`;
+        }
+
+        Swal.fire({
+            title: "Inscribirse al partido",
+            html: `
+                <form method="post">
+                    <input type="hidden" name="idpartido" value="${idpartido}">
+
+                    <label for="nombre" style="display: block; margin-bottom: 5px;">Selecciona tu equipo</label>
+                    <select name="idequipo" class="form-control">
+                        ${selectOptions}
+                    </select>
+
+                    <button type="submit" class="btn btn-primary mt-2">Unir</button>
+                </form>
+            `,
+            showCancelButton: true,
+            showConfirmButton: false,
+            cancelButtonText: "Cancelar",
+        });
+    }
 </script>
 
 </script>

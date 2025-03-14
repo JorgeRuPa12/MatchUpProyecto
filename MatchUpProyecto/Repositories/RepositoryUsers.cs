@@ -61,5 +61,13 @@ namespace MatchUpProyecto.Repositories
                 }
             }
         }
+
+        public async Task UpdateImagenUser(string imagen, int idusuario)
+        {
+            User user = await this.context.Users.Where(z => z.Id == idusuario).FirstOrDefaultAsync();
+            user.Imagen = imagen;
+
+            await this.context.SaveChangesAsync();
+        }
     }
 }

@@ -95,5 +95,13 @@ namespace MatchUpProyecto.Repositories
             this.context.UsuariosEquipo.Remove(model);
             await this.context.SaveChangesAsync();
         }
+
+        public async Task UnirEquipoPartido(int idequipo, int idpartido)
+        {
+            Partido partido = await this.context.Partidos.Where(z => z.Id == idpartido).FirstOrDefaultAsync();
+
+            partido.EquipoVisitante = idequipo;
+            await this.context.SaveChangesAsync();
+        }
     }
 }
