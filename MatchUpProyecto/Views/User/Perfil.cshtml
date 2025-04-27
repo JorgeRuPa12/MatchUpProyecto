@@ -9,7 +9,8 @@
     ViewData["Title"] = "Perfil";
     List<Equipo> equipos = ViewData["Equipos"] as List<Equipo>;
     List<PartidoEquipos> partidos = ViewData["PartidosMes"] as List<PartidoEquipos>;
-
+    string containerUrlUsers = "https://storagematchup.blob.core.windows.net/imagenes/users/";
+    string containerUrlEscudos= "https://storagematchup.blob.core.windows.net/imagenes/escudos/";
     List<string> userImages = ["atardecer.jpg", "gatito.jpg", "lobo.jpg", "lobo2.jpg", "monoespacial.jpg", "perrosalchicha.jpg", "simio.jpg"];
 }
 
@@ -20,7 +21,7 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img id="avatarImg" src="~/img/users/@Context.User.FindFirst("Imagen").Value" alt="avatar"
+                        <img id="avatarImg" src='@Context.User.FindFirst("Imagen").Value' alt="avatar"
                                  class="rounded-circle img-fluid" style="width: 150px; cursor: pointer">
                         <h5 class="my-3">@Context.User.Identity.Name</h5>
                     </div>
@@ -86,7 +87,7 @@
                                         
                                         <p class="mt-4 mb-1" style="font-size: .90rem;">
                                             <a asp-action="Detalles" asp-controller="Equipos" asp-route-idequipo="@equi.Id" style="color:#212529">
-                                                <img src="~/img/escudos/@equi.Emblema" alt="Equipo" width="32" height="32" />
+                                                <img src="@equi.Emblema" alt="Equipo" width="32" height="32" />
                                                 @equi.Nombre
                                             </a>
                                          </p>
@@ -115,7 +116,7 @@
 
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <div style="text-align: center;">
-                                                            <img src="~/img/escudos/@par.Local.Emblema" alt="Local" style="width: 50px; height: 50px;">
+                                                        <img src="@containerUrlEscudos@par.Local.Emblema" alt="Local" style="width: 50px; height: 50px;">
                                                             <p style="font-size: 14px; font-weight: bold;">@par.Local.Nombre</p>
                                                         </div>
                                                         <div style="text-align: center;">
@@ -123,13 +124,13 @@
                                                         </div>
                                                         @if(par.Visitante == null){
                                                             <div style="text-align: center;">
-                                                                <img src="~/img/escudos/noteam.jpg"
+                                                                <img src="@containerUrlEscudos+noteam.jpg"
                                                                      alt="Visitante" style="width: 50px; height: 50px;">
                                                                 <p style="font-size: 14px; font-weight: bold;">Por confirmar</p>
                                                             </div>
                                                         }else{
                                                         <div style="text-align: center;">
-                                                            <img src="~/img/escudos/@par.Visitante.Emblema"
+                                                            <img src="@containerUrlEscudos@par.Visitante.Emblema"
                                                                  alt="Visitante" style="width: 50px; height: 50px;">
                                                             <p style="font-size: 14px; font-weight: bold;">@par.Visitante.Nombre</p>
                                                         </div>
@@ -174,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         link.style.textDecoration = "none";
 
                         let imgElement = document.createElement("img");
-                        imgElement.src = "/img/users/" + img;
+                            imgElement.src = "@containerUrlUsers" + img;
                         imgElement.style.width = "80px";
                         imgElement.style.height = "80px";
                         imgElement.style.cursor = "pointer";

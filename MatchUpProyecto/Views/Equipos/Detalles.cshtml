@@ -2,8 +2,28 @@
 
 @{
     ViewData["Title"] = "Detalles";
-    string data = Context.User.FindFirst("Id").Value;
-    int id = int.Parse(data);
+    // Verificamos que el modelo no sea null
+    if (Model == null)
+    {
+        <div class="alert alert-danger">El modelo de equipo no está disponible.</div>
+        return;
+    }
+
+    string data = Context.User.FindFirst("Id")?.Value;  // Usamos el operador null-conditional (?.)
+    int id = 0;  // Valor por defecto
+    if (!string.IsNullOrEmpty(data))
+    {
+        if (!int.TryParse(data, out id))  // Si el valor no es un número válido, usa el valor por defecto
+        {
+            // Aquí puedes mostrar un mensaje de error o manejar el caso
+            <div class="alert alert-danger">El ID del usuario no es válido.</div>
+        }
+    }
+    else
+    {
+    // Si no se encuentra el claim "Id", puedes redirigir o mostrar un mensaje
+        <div class="alert alert-warning">Usuario no autenticado.</div>
+    }
 }
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">

@@ -1,4 +1,4 @@
-﻿using MatchUpProyecto.Models;
+﻿using NugetMatchUp.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MatchUpProyecto.Data

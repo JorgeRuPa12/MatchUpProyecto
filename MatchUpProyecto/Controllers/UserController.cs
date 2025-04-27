@@ -1,25 +1,21 @@
 ﻿using MatchUpProyecto.Extensions;
-using MatchUpProyecto.Models;
-using MatchUpProyecto.Repositories;
+using NugetMatchUp.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
 using MatchUpProyecto.Filters;
+using MatchUpProyecto.Services;
 
 namespace MatchUpProyecto.Controllers
 {
     public class UserController : Controller
     {
-        private RepositoryUsers repo;
-        private RepositoryEquipos repoE;
-        private RepositoryPachanga repoP;
-        public UserController(RepositoryUsers repo, RepositoryEquipos repoE, RepositoryPachanga repoP)
+        private ServiceMatchUp service;
+        public UserController(ServiceMatchUp service)
         {
-            this.repo = repo;
-            this.repoE = repoE;
-            this.repoP = repoP;
+            this.service = service;
         }
         public IActionResult Index()
         {
@@ -29,10 +25,11 @@ namespace MatchUpProyecto.Controllers
         [AuthorizeUser]
         public async Task<IActionResult> Perfil()
         {
+            string token = HttpContext.Session.GetString("TOKEN");
             int idusuario = int.Parse(HttpContext.User.FindFirst("Id").Value);
-            List<Equipo> equipos = await this.repoE.GetEquiposUsuarioAysnc(idusuario);
+            List<Equipo> equipos = await this.service.GetEquiposUserAsync(idusuario, token);
             ViewData["Equipos"] = equipos;
-            List <PartidoEquipos> partidos = await this.repoP.GetPartidosDelMesActual(idusuario);
+            List <PartidoEquipos> partidos = await this.service.GetPartidosMesAsync(idusuario, token);
             ViewData["PartidosMes"] = partidos;
             return View();
         }
@@ -40,17 +37,19 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> Perfil(int local, int visitante, int idpartido)
         {
-            await this.repoP.ActualizarResultadoAsync(local, visitante, idpartido);
+            string token = HttpContext.Session.GetString("TOKEN");
+            await this.service.UpdateResultPachanga(local, visitante, idpartido, token);
             return RedirectToAction("Perfil");
         }
 
         [AuthorizeUser]
         public async Task<IActionResult> CambiarImagen(string imagen)
         {
+            string token = HttpContext.Session.GetString("TOKEN");
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
-
+            imagen = "https://storagematchup.blob.core.windows.net/imagenes/users/" + imagen;
             // Actualizar la imagen en la base de datos
-            await this.repo.UpdateImagenUser(imagen, id);
+            await this.service.UpdateImageUser(imagen, id, token);
 
             // Obtener la identidad del usuario actual
             var user = HttpContext.User;
@@ -83,7 +82,7 @@ namespace MatchUpProyecto.Controllers
         public async Task<IActionResult> Register(User user, string password)
         {
             user.Imagen = "defaultuser.jpg";
-            await this.repo.InsertUser(user, password);
+            await this.service.RegisterUserAsync(user.Email, password, user.Nombre);
             return RedirectToAction("Login");
         }
 
@@ -95,34 +94,44 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> LogIn(string correo, string pass)
         {
-            User user = await this.repo.LogInEmpleadosAsync(correo, pass);
-            if (user != null)
+            string token = await this.service.GetTokenAsync(correo, pass);
+            if(token == null)
             {
-                ClaimsIdentity identity = new ClaimsIdentity(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    ClaimTypes.Name, ClaimTypes.Role
-                    );
-                Claim claimName = new Claim(ClaimTypes.Name, user.Nombre);
-                identity.AddClaim(claimName);
-                Claim claimId = new Claim(("Id"), user.Id.ToString());
-                identity.AddClaim(claimId);
-                Claim claimRol = new Claim(ClaimTypes.Role, user.Rol);
-                identity.AddClaim(claimRol);
-                Claim claimEmail = new Claim(ClaimTypes.Email, user.Email);
-                identity.AddClaim(claimEmail);
-                Claim claimImagen = new Claim("Imagen", user.Imagen);
-                identity.AddClaim(claimImagen);
-                ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    userPrincipal
-                    );
-                return RedirectToAction("Perfil");
+                ViewData["MENSAJE"] = "Usuario/Password incorrectos";
+                return View();
             }
             else
             {
-                ViewData["MENSAJE"] = "Credenciales incorrectos";
-                return View();
+                HttpContext.Session.SetString("TOKEN", token); 
+                User user = await this.service.LoginAsync(correo, pass);
+                if (user != null)
+                {
+                    ClaimsIdentity identity = new ClaimsIdentity(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        ClaimTypes.Name, ClaimTypes.Role
+                        );
+                    Claim claimName = new Claim(ClaimTypes.Name, user.Nombre);
+                    identity.AddClaim(claimName);
+                    Claim claimId = new Claim(("Id"), user.Id.ToString());
+                    identity.AddClaim(claimId);
+                    Claim claimRol = new Claim(ClaimTypes.Role, user.Rol);
+                    identity.AddClaim(claimRol);
+                    Claim claimEmail = new Claim(ClaimTypes.Email, user.Email);
+                    identity.AddClaim(claimEmail);
+                    Claim claimImagen = new Claim("Imagen", user.Imagen);
+                    identity.AddClaim(claimImagen);
+                    ClaimsPrincipal userPrincipal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        userPrincipal
+                        );
+                    return RedirectToAction("Perfil");
+                }
+                else
+                {
+                    ViewData["MENSAJE"] = "Credenciales incorrectos";
+                    return View();
+                }
             }
         }
 

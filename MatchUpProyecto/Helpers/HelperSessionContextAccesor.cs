@@ -1,5 +1,5 @@
 ﻿using MatchUpProyecto.Extensions;
-using MatchUpProyecto.Models;
+using NugetMatchUp.Models;
 
 namespace MvcNetCoreSession.Helpers
 {

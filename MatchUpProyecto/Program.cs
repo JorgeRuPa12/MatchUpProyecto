@@ -1,5 +1,4 @@
-using MatchUpProyecto.Data;
-using MatchUpProyecto.Repositories;
+using MatchUpProyecto.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MvcNetCoreSession.Helpers;
@@ -9,17 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-string connectionString = builder.Configuration.GetConnectionString("SqlMatchUp");
 
 
 builder.Services.AddSingleton<HelperSessionContextAccesor>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddTransient<RepositoryDeportes>();
-builder.Services.AddTransient<RepositoryPachanga>();
-builder.Services.AddTransient<RepositoryUsers>();
-builder.Services.AddTransient<RepositoryEquipos>();
-builder.Services.AddDbContext<MatchUpContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddTransient<ServiceMatchUp>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

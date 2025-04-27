@@ -1,28 +1,27 @@
 ﻿using MatchUpProyecto.Extensions;
 using MatchUpProyecto.Filters;
-using MatchUpProyecto.Models;
-using MatchUpProyecto.Repositories;
+using NugetMatchUp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using MatchUpProyecto.Services;
 
 namespace MatchUpProyecto.Controllers
 {
     public class PachangasController : Controller
     {
-        public RepositoryPachanga repo;
-        public RepositoryEquipos repoE;
-        public PachangasController (RepositoryPachanga repo, RepositoryEquipos repoE)
+        public ServiceMatchUp service;
+        public PachangasController (ServiceMatchUp service)
         {
-            this.repo = repo;
-            this.repoE = repoE;
+            this.service = service;
         }
         public async Task<IActionResult> Index()
         {
-            List<PartidoEquipos> partidos = await this.repo.ObtenerPartidosPorPachanga();
+            string token = HttpContext.Session.GetString("TOKEN");
+            List<PartidoEquipos> partidos = await this.service.GetPartidosPachangaAsync();
             if (HttpContext.User.Identity.IsAuthenticated)
             {
-                List<Equipo> equipos = await this.repoE.GetEquiposUsuarioAysnc(int.Parse(HttpContext.User.FindFirst("Id").Value));
+                List<Equipo> equipos = await this.service.GetEquiposUserAsync(int.Parse(HttpContext.User.FindFirst("Id").Value), token);
                 ViewData["Equipos"] = equipos;
             }
             return View(partidos);
@@ -32,7 +31,8 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(int idequipo, int idpartido)
         {
-            await this.repoE.UnirEquipoPartido(idequipo, idpartido);
+            string token = HttpContext.Session.GetString("TOKEN");
+            await this.service.UnirseAPartidoAsync(idequipo, idpartido, token);
             return RedirectToAction("Index");
         }
 
@@ -46,9 +46,10 @@ namespace MatchUpProyecto.Controllers
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
+                string token = HttpContext.Session.GetString("TOKEN");
                 string dato = HttpContext.User.FindFirst("Id").Value;
                 int id = int.Parse(dato);
-                List<Equipo> misEquipos = await this.repoE.GetEquiposUsuarioAysnc(id);
+                List<Equipo> misEquipos = await this.service.GetEquiposUserAsync(id, token);
                 HttpContext.Session.SetObject("MISEQUIPOS", misEquipos);
             }
             return View();
@@ -60,7 +61,8 @@ namespace MatchUpProyecto.Controllers
         {
             if(pachanga.UbiProvincia != null)
             {
-                await this.repo.InsertPachangaAsync(pachanga, idequipo);
+                string token = HttpContext.Session.GetString("TOKEN");
+                await this.service.CreatePachangaAsync(pachanga, idequipo, token);
                 return RedirectToAction("Index");
             }
             else

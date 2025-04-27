@@ -1,21 +1,21 @@
 ﻿using MatchUpProyecto.Filters;
-using MatchUpProyecto.Models;
-using MatchUpProyecto.Repositories;
+using NugetMatchUp.Models;
 using Microsoft.AspNetCore.Mvc;
+using MatchUpProyecto.Services;
 
 namespace MatchUpProyecto.Controllers
 {
     public class EquiposController : Controller
     {
-        private RepositoryEquipos repo;
-        public EquiposController(RepositoryEquipos repo)
+        private ServiceMatchUp service;
+        public EquiposController(ServiceMatchUp service)
         {
-            this.repo = repo;
+            this.service = service;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<Equipo> equipos = await this.repo.GetEquiposAsync();
+            List<Equipo> equipos = await this.service.GetEquiposAsync();
             return View(equipos);
         }
 
@@ -30,38 +30,42 @@ namespace MatchUpProyecto.Controllers
         [HttpPost]
         public async Task<IActionResult> Insert(Equipo equipo)
         {
+            string token = HttpContext.Session.GetString("TOKEN");
             equipo.Emblema = "emblema" + equipo.Emblema + ".jpg";
-            await this.repo.InsertEquipoAsync(equipo);
+            await this.service.PostEquipoAsync(token, equipo);
             return RedirectToAction("Index");
         }
 
         [AuthorizeUser]
         public async Task<IActionResult> MisEquipos(int idusuario)
         {
-            List<Equipo> misEquipos = await this.repo.GetEquiposUsuarioAysnc(idusuario);
+            string token = HttpContext.Session.GetString("TOKEN");
+            List<Equipo> misEquipos = await this.service.GetEquiposUserAsync(idusuario, token);
             return View(misEquipos);
         }
 
         [AuthorizeUser]
         public async Task<IActionResult> Detalles(int idequipo)
         {
-            EquipoDetalle equipoDetalle = await this.repo.GetEquipoDetalleAsync(idequipo);
+            EquipoDetalle equipoDetalle = await this.service.GetEquipoDetailsAsync(idequipo);
             return View(equipoDetalle);
         }
 
         public async Task<IActionResult> Join(int idequipo)
         {
+            string token = HttpContext.Session.GetString("TOKEN");
             string dato = HttpContext.User.FindFirst("Id").Value;
             int idusuario = int.Parse(dato);
-            await this.repo.UnirseEquipoAsync(idequipo, idusuario);
+            await this.service.UnirseEquipoAsync(idequipo, idusuario, token);
             return RedirectToAction("Perfil");
         }
         
         public async Task<IActionResult> Leave(int idequipo)
         {
+            string token = HttpContext.Session.GetString("TOKEN");
             string dato = HttpContext.User.FindFirst("Id").Value;
             int idusuario = int.Parse(dato);
-            await this.repo.SalirseEquipoAsync(idequipo, idusuario);
+            await this.service.SalirseEquipoAsync(idequipo, idusuario, token);
             return RedirectToAction("Perfil");
         }
     }
