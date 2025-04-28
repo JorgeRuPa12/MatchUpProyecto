@@ -47,7 +47,6 @@ namespace MatchUpProyecto.Controllers
         {
             string token = HttpContext.Session.GetString("TOKEN");
             int id = int.Parse(HttpContext.User.FindFirst("Id").Value);
-            imagen = "https://storagematchup.blob.core.windows.net/imagenes/users/" + imagen;
             // Actualizar la imagen en la base de datos
             await this.service.UpdateImageUser(imagen, id, token);
 
@@ -63,7 +62,7 @@ namespace MatchUpProyecto.Controllers
             }
 
             // Agregar el nuevo claim con la imagen actualizada
-            identity.AddClaim(new Claim("Imagen", imagen));
+            identity.AddClaim(new Claim("Imagen", "https://storagematchup.blob.core.windows.net/imagenes/users/"+imagen));
 
             // Crear una nueva identidad con los claims actualizados
             var newPrincipal = new ClaimsPrincipal(identity);

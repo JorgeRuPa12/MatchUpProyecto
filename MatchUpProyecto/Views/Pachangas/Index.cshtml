@@ -5,6 +5,7 @@
     var equipos = Context.User.Identity.IsAuthenticated && ViewData["Equipos"] != null
         ? (List<Equipo>)ViewData["Equipos"]
         : new List<Equipo>();
+    string noTeamUrl = "https://storagematchup.blob.core.windows.net/imagenes/escudos/noteam.jpg";
 }
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -171,8 +172,8 @@
     @foreach (PartidoEquipos pachanga in Model)
     {
         var escudoVisitante = pachanga.Visitante != null
-           ? Url.Content("~/img/escudos/" + pachanga.Visitante.Emblema)
-           : Url.Content("~/img/escudos/noteam.jpg"); // Imagen por defecto
+           ? Url.Content(pachanga.Visitante.Emblema)
+           : Url.Content(noTeamUrl); // Imagen por defecto
 
         var nombreVisitante = pachanga.Visitante?.Nombre ?? "Por confirmar";
 
@@ -185,7 +186,7 @@
                     "dia": "@pachanga.Match.Fecha.ToString("dddd, dd MMM")",
                     "hora": "@pachanga.Match.Fecha.ToString("HH:mm")",
                     "marcador": "@pachanga.Match.Resultado",
-                    "escudoLocal": "@Url.Content("~/img/escudos/" + pachanga.Local.Emblema)",
+                    "escudoLocal": "@Url.Content(pachanga.Local.Emblema)",
                     "escudoVisitante": "@escudoVisitante",
                     "idpartido": @pachanga.Match.Id
                 },
@@ -216,7 +217,7 @@
                             <p style="font-size: 14px; font-weight: bold;">${partido.nombreVisitante}</p>
                         </div>
                     </div>
-                    ${partido.escudoVisitante === "/img/escudos/noteam.jpg" ? `
+                    ${partido.escudoVisitante === "@noTeamUrl" ? `
                     <button onclick="mostrarFormularioInscripcion(${partido.idpartido})" class="btn btn-success">
                         Inscribirse
                     </button>

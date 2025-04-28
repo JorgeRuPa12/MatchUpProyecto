@@ -10,7 +10,8 @@
     List<Equipo> equipos = ViewData["Equipos"] as List<Equipo>;
     List<PartidoEquipos> partidos = ViewData["PartidosMes"] as List<PartidoEquipos>;
     string containerUrlUsers = "https://storagematchup.blob.core.windows.net/imagenes/users/";
-    string containerUrlEscudos= "https://storagematchup.blob.core.windows.net/imagenes/escudos/";
+    string containerUrlEscudos = "https://storagematchup.blob.core.windows.net/imagenes/escudos/";
+    string containerUrlNoTeam = "https://storagematchup.blob.core.windows.net/imagenes/escudos/noteam.jpg";
     List<string> userImages = ["atardecer.jpg", "gatito.jpg", "lobo.jpg", "lobo2.jpg", "monoespacial.jpg", "perrosalchicha.jpg", "simio.jpg"];
 }
 
@@ -116,7 +117,7 @@
 
                                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                                         <div style="text-align: center;">
-                                                        <img src="@containerUrlEscudos@par.Local.Emblema" alt="Local" style="width: 50px; height: 50px;">
+                                                        <img src="@par.Local.Emblema" alt="Local" style="width: 50px; height: 50px;">
                                                             <p style="font-size: 14px; font-weight: bold;">@par.Local.Nombre</p>
                                                         </div>
                                                         <div style="text-align: center;">
@@ -124,22 +125,24 @@
                                                         </div>
                                                         @if(par.Visitante == null){
                                                             <div style="text-align: center;">
-                                                                <img src="@containerUrlEscudos+noteam.jpg"
+                                                            <img src="@containerUrlNoTeam"
                                                                      alt="Visitante" style="width: 50px; height: 50px;">
                                                                 <p style="font-size: 14px; font-weight: bold;">Por confirmar</p>
                                                             </div>
                                                         }else{
                                                         <div style="text-align: center;">
-                                                            <img src="@containerUrlEscudos@par.Visitante.Emblema"
+                                                            <img src="@par.Visitante.Emblema"
                                                                  alt="Visitante" style="width: 50px; height: 50px;">
                                                             <p style="font-size: 14px; font-weight: bold;">@par.Visitante.Nombre</p>
                                                         </div>
                                                         }
-                                                        @if (DateTime.Now > par.Match.Fecha && par.Match.Resultado == "Por Determinar" && par.Visitante != null)
-                                                        {
-                                                             <button id="btnResultado" class="btn btn-warning mt-2" value="@par.Match.Id">Ingresar Resultado</button>
-                                                        }
                                                     </div>
+                                                @if (DateTime.Now > par.Match.Fecha && par.Match.Resultado == "Por Determinar" && par.Visitante != null)
+                                                {
+                                                    <div style="text-align: center; margin-top: 10px;">
+                                                        <button id="btnResultado" class="btn btn-warning" value="@par.Match.Id">Ingresar Resultado</button>
+                                                    </div>
+                                                }
                                                 </div>
 
                                         </p>

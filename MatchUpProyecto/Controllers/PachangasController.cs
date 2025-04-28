@@ -15,6 +15,7 @@ namespace MatchUpProyecto.Controllers
         {
             this.service = service;
         }
+        [AuthorizeUser]
         public async Task<IActionResult> Index()
         {
             string token = HttpContext.Session.GetString("TOKEN");

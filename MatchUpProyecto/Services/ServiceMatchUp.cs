@@ -218,9 +218,9 @@ namespace MatchUpProyecto.Services
         }
 
 
-        public async Task UpdateResultPachanga(int local, int visitante, int idequipo, string token)
+        public async Task UpdateResultPachanga(int local, int visitante, int idpartido, string token)
         {
-            string request = "Pachangas/UpdateResult/" + local + "/" + visitante + "/" + idequipo;
+            string request = "Pachangas/UpdateResult/" + local + "/" + visitante + "/" + idpartido;
             using (HttpClient client = new HttpClient())
             {
                 client.BaseAddress = new Uri(this.ApiUrl);
@@ -263,6 +263,7 @@ namespace MatchUpProyecto.Services
                 client.BaseAddress = new Uri(this.ApiUrl);
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(this.header);
+                client.DefaultRequestHeaders.Add("Authorization", "bearer " + token);
                 HttpContent emptyContent = new StringContent("");
                 HttpResponseMessage response = await client.PutAsync(request, emptyContent);
             }
