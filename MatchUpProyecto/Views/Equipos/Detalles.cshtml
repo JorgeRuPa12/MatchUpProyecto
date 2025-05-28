@@ -62,7 +62,11 @@
                     <td>@jugador.Nombre</td>
                     <td>@jugador.Email</td>
                     @if(Model.Detalles.IdAdmin == int.Parse(Context.User.FindFirst("Id").Value)){
-                        <td><a class="btn btn-outline-danger">Expulsar</a></td>
+                        if(Model.Detalles.IdAdmin != jugador.Id){
+                            <td><a class="btn btn-outline-danger">Expulsar</a></td>
+                        }else{
+                            <td></td>
+                        }
                     }else{
                         <td></td>
                     }

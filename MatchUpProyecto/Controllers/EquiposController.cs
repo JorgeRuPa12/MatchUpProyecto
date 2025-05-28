@@ -57,7 +57,7 @@ namespace MatchUpProyecto.Controllers
             string dato = HttpContext.User.FindFirst("Id").Value;
             int idusuario = int.Parse(dato);
             await this.service.UnirseEquipoAsync(idequipo, idusuario, token);
-            return RedirectToAction("Perfil");
+            return RedirectToAction("Perfil", "User");
         }
         
         public async Task<IActionResult> Leave(int idequipo)
@@ -66,7 +66,7 @@ namespace MatchUpProyecto.Controllers
             string dato = HttpContext.User.FindFirst("Id").Value;
             int idusuario = int.Parse(dato);
             await this.service.SalirseEquipoAsync(idequipo, idusuario, token);
-            return RedirectToAction("Perfil");
+            return RedirectToAction("Perfil", "User");
         }
     }
 }

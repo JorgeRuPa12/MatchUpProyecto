@@ -202,6 +202,7 @@ namespace MatchUpProyecto.Services
             List<PartidoEquipos> data = await this.CallApiAsync<List<PartidoEquipos>>(request, token);
             return data;
         }
+
         public async Task CreatePachangaAsync(Pachanga pachanga, int idequipo, string token)
         {
             string request = "Pachangas/Create/" + idequipo;

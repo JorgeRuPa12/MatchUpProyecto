@@ -1,0 +1,55 @@
+﻿@model List<PartidoEquipos>
+
+@{
+    string containerUrlUsers = "https://storagematchup.blob.core.windows.net/imagenes/users/";
+    string containerUrlEscudos = "https://storagematchup.blob.core.windows.net/imagenes/escudos/";
+    string containerUrlNoTeam = "https://storagematchup.blob.core.windows.net/imagenes/escudos/noteam.jpg";
+}
+
+@if (Model != null)
+{
+    @foreach (PartidoEquipos par in Model)
+    {
+
+        <p class="mt-4 mb-1" style="font-size: .90rem;">
+            <div style="width: 100%; text-align: center; font-family: Arial, sans-serif;">
+                <p style="color: gray; font-size: 12px;">@par.Match.Resultado</p>
+                <h2 style="font-size: 20px; font-weight: bold;">@par.Pacha.Fecha.ToString("HH:mm")</h2>
+                <p style="font-size: 14px; margin-bottom: 10px;">@par.Pacha.Fecha.ToString("dd/MM/yyyy")</p>
+
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="text-align: center;">
+                        <img src="@par.Local.Emblema" alt="Local" style="width: 50px; height: 50px;">
+                        <p style="font-size: 14px; font-weight: bold;">@par.Local.Nombre</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <p style="font-size: 18px; font-weight: bold;">VS</p>
+                    </div>
+                    @if (par.Visitante == null)
+                    {
+                        <div style="text-align: center;">
+                            <img src="@containerUrlNoTeam"
+                                 alt="Visitante" style="width: 50px; height: 50px;">
+                            <p style="font-size: 14px; font-weight: bold;">Por confirmar</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="text-align: center;">
+                            <img src="@par.Visitante.Emblema"
+                                 alt="Visitante" style="width: 50px; height: 50px;">
+                            <p style="font-size: 14px; font-weight: bold;">@par.Visitante.Nombre</p>
+                        </div>
+                    }
+                </div>
+                @if (DateTime.Now > par.Match.Fecha && par.Match.Resultado == "Por Determinar" && par.Visitante != null)
+                {
+                    <div style="text-align: center; margin-top: 10px;">
+                        <button id="btnResultado" class="btn btn-warning" value="@par.Match.Id">Ingresar Resultado</button>
+                    </div>
+                }
+            </div>
+
+        </p>
+    }
+}
