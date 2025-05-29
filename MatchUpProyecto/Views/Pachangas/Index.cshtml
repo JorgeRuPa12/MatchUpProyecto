@@ -5,7 +5,7 @@
     var equipos = Context.User.Identity.IsAuthenticated && ViewData["Equipos"] != null
         ? (List<Equipo>)ViewData["Equipos"]
         : new List<Equipo>();
-    string noTeamUrl = "https://storagematchup.blob.core.windows.net/imagenes/escudos/noteam.jpg";
+    string noTeamUrl = "https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/escudos/noteam.jpg";
 }
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-3">

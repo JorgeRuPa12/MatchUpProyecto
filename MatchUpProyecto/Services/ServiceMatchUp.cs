@@ -14,7 +14,7 @@ namespace MatchUpProyecto.Services
         private MediaTypeWithQualityHeaderValue header;
         public ServiceMatchUp(IConfiguration configuration)
         {
-            this.ApiUrl = "https://apimatchup.azurewebsites.net/api/";
+            this.ApiUrl = "https://kqgwyeabmh.execute-api.us-east-1.amazonaws.com/Prod/api/";
             this.header = new MediaTypeWithQualityHeaderValue("application/json");
         }
 

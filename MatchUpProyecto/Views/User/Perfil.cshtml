@@ -9,9 +9,9 @@
     ViewData["Title"] = "Perfil";
     List<Equipo> equipos = ViewData["Equipos"] as List<Equipo>;
     List<PartidoEquipos> partidos = ViewData["PartidosMes"] as List<PartidoEquipos>;
-    string containerUrlUsers = "https://storagematchup.blob.core.windows.net/imagenes/users/";
-    string containerUrlEscudos = "https://storagematchup.blob.core.windows.net/imagenes/escudos/";
-    string containerUrlNoTeam = "https://storagematchup.blob.core.windows.net/imagenes/escudos/noteam.jpg";
+    string containerUrlUsers = "https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/users/";
+    string containerUrlEscudos = "https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/escudos/";
+    string containerUrlNoTeam = "https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/escudos/noteam.jpg";
     List<string> userImages = ["atardecer.jpg", "gatito.jpg", "lobo.jpg", "lobo2.jpg", "monoespacial.jpg", "perrosalchicha.jpg", "simio.jpg"];
 }
 

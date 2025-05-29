@@ -62,7 +62,7 @@ namespace MatchUpProyecto.Controllers
             }
 
             // Agregar el nuevo claim con la imagen actualizada
-            identity.AddClaim(new Claim("Imagen", "https://storagematchup.blob.core.windows.net/imagenes/users/"+imagen));
+            identity.AddClaim(new Claim("Imagen", "https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/users/" + imagen));
 
             // Crear una nueva identidad con los claims actualizados
             var newPrincipal = new ClaimsPrincipal(identity);

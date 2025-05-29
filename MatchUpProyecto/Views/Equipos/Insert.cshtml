@@ -40,9 +40,10 @@
                             <select id="Emblema" name="Emblema" class="form-control">
                                 @foreach (var num in numeros)
                                 {
-                                    <option value="@num" data-image="@num">
+                                    <option value="@num" data-image="@($"emblema{num}")">
                                         Emblema @num
                                     </option>
+
                                 }
                             </select>
                         </div>
@@ -70,12 +71,12 @@
             templateResult: function(option) {
                 if (!option.id) { return option.text; }
                 var img = $(option.element).data('image');
-                return $('<span><img src="/img/escudos/emblema' + img + '.jpg" width="40" style="margin-right:10px;">' + option.text + '</span>');
+                return $('<span><img src="https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/escudos/' + img + '.jpg" width="40" style="margin-right:10px;">' + option.text + '</span>');
             },
             templateSelection: function(option) {
                 if (!option.id) { return option.text; }
                 var img = $(option.element).data('image');
-                return $('<span><img src="/img/escudos/emblema' + img + '.jpg" width="20" style="margin-right:5px;">' + option.text + '</span>');
+                return $('<span><img src="https://bucket-matchup-jrp.s3.us-east-1.amazonaws.com/escudos/' + img + '.jpg" width="20" style="margin-right:5px;">' + option.text + '</span>');
             }
         });
     });
